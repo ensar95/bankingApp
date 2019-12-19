@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BankingAppApplication {
-
+	// napisao sam neki kul kod
 	public static void main(String[] args) {
 		SpringApplication.run(BankingAppApplication.class, args);
 	}
