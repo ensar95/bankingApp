@@ -3,6 +3,7 @@ package com.banking.app.bankingApp.service.users;
 import com.banking.app.bankingApp.Users.CreateUser;
 import com.banking.app.bankingApp.Users.DBUser;
 import com.banking.app.bankingApp.Users.UpdateUser;
+import com.banking.app.bankingApp.Users.User;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 
 import java.time.LocalDateTime;
@@ -22,38 +23,37 @@ public class UserManagementService {
         createUser.setCreatedAt(now);
         usersDatabaseService.createDbUser(createUser);
     }
-    public UpdateUser getUserById(String id){
+    public User getUserById(String id){
     DBUser dbUser=usersDatabaseService.findUserById(id);
-    UpdateUser updateUser=new UpdateUser();
-    updateUser.setId(dbUser.getId());
-    updateUser.setFirstName(dbUser.getFirstName());
-    updateUser.setLastName(dbUser.getLastName());
-    updateUser.setEmail(dbUser.getEmail());
-    updateUser.setDateOfBirth(dbUser.getDateOfBirth());
-    updateUser.setOccupation(dbUser.getOccupation());
-    updateUser.setCurrentAdress(dbUser.getCurrentAdress());
-    updateUser.setPhoneNumber(dbUser.getPhoneNumber());
-    return updateUser;
+    User user=new User();
+    user.setId(dbUser.getId());
+    user.setFirstName(dbUser.getFirstName());
+    user.setLastName(dbUser.getLastName());
+    user.setEmail(dbUser.getEmail());
+    user.setDateOfBirth(dbUser.getDateOfBirth());
+    user.setOccupation(dbUser.getOccupation());
+    user.setCurrentAdress(dbUser.getCurrentAdress());
+    user.setPhoneNumber(dbUser.getPhoneNumber());
+    return user;
     }
     public void updateUser(String id, UpdateUser updateUser){
     usersDatabaseService.updateUser(id, updateUser);
     }
 
-    public List<CreateUser> getAllUsers(){
-    List<CreateUser> allUsers = new ArrayList<>();
+    public List<User> getAllUsers(){
+    List<User> allUsers = new ArrayList<>();
     List<DBUser> allDbUsers=usersDatabaseService.getAllUsers();
-    CreateUser createUser=new CreateUser();
     for (int i=0; i<allDbUsers.size(); i++){
-        createUser.setId(allDbUsers.get(i).getId());
-        createUser.setFirstName(allDbUsers.get(i).getFirstName());
-        createUser.setLastName(allDbUsers.get(i).getLastName());
-        createUser.setEmail(allDbUsers.get(i).getEmail());
-        createUser.setDateOfBirth(allDbUsers.get(i).getDateOfBirth());
-        createUser.setOccupation(allDbUsers.get(i).getOccupation());
-        createUser.setCurrentAdress(allDbUsers.get(i).getCurrentAdress());
-        createUser.setPhoneNumber(allDbUsers.get(i).getPhoneNumber());
-        createUser.setCreatedAt(allDbUsers.get(i).getCreatedAt());
-        allUsers.add(createUser);
+        User user=new User();
+        user.setId(allDbUsers.get(i).getId());
+        user.setFirstName(allDbUsers.get(i).getFirstName());
+        user.setLastName(allDbUsers.get(i).getLastName());
+        user.setEmail(allDbUsers.get(i).getEmail());
+        user.setDateOfBirth(allDbUsers.get(i).getDateOfBirth());
+        user.setOccupation(allDbUsers.get(i).getOccupation());
+        user.setCurrentAdress(allDbUsers.get(i).getCurrentAdress());
+        user.setPhoneNumber(allDbUsers.get(i).getPhoneNumber());
+        allUsers.add(user);
     }
     return allUsers;
     }
