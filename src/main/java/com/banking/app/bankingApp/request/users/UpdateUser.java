@@ -1,17 +1,19 @@
-package com.banking.app.bankingApp.Users;
+package com.banking.app.bankingApp.request.users;
 
 import java.util.Date;
 
-public class User {
-    private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private Date dateOfBirth;
-    private String occupation;
-    private String currentAdress;
-    private String phoneNumber;
+public class UpdateUser {
+        private String id;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private Date dateOfBirth;
+        private String occupation;
+        private String currentAdress;
+        private String phoneNumber;
 
+        public UpdateUser() {
+        }
 
     public String getId() {
         return id;
@@ -77,6 +79,5 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public User() {
-    }
+
 }

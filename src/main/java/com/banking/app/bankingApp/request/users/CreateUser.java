@@ -1,13 +1,9 @@
-package com.banking.app.bankingApp.Users;
+package com.banking.app.bankingApp.request.users;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+
 import java.util.Date;
-@Entity
-public class DBUser {
-    @Id
-    private String id;
+
+public class CreateUser {
     private String firstName;
     private String lastName;
     private String email;
@@ -15,17 +11,8 @@ public class DBUser {
     private String occupation;
     private String currentAdress;
     private String phoneNumber;
-    private LocalDateTime createdAt;
 
-    public DBUser() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public CreateUser() {
     }
 
     public String getFirstName() {
@@ -83,12 +70,5 @@ public class DBUser {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
+

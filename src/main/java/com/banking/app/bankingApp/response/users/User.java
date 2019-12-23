@@ -1,19 +1,26 @@
-package com.banking.app.bankingApp.Users;
+package com.banking.app.bankingApp.response.users;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
-public class UpdateUser {
-        private String id;
-        private String firstName;
-        private String lastName;
-        private String email;
-        private Date dateOfBirth;
-        private String occupation;
-        private String currentAdress;
-        private String phoneNumber;
+public class User {
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private Date dateOfBirth;
+    private String occupation;
+    private String currentAdress;
+    private String phoneNumber;
+    private LocalDateTime createdAt;
 
-        public UpdateUser() {
-        }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public String getId() {
         return id;
@@ -79,5 +86,6 @@ public class UpdateUser {
         this.phoneNumber = phoneNumber;
     }
 
-
+    public User() {
+    }
 }

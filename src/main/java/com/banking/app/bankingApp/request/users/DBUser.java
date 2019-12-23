@@ -1,9 +1,12 @@
-package com.banking.app.bankingApp.Users;
+package com.banking.app.bankingApp.request.users;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Date;
-
-public class CreateUser {
+@Entity
+public class DBUser {
+    @Id
     private String id;
     private String firstName;
     private String lastName;
@@ -14,8 +17,9 @@ public class CreateUser {
     private String phoneNumber;
     private LocalDateTime createdAt;
 
-    public CreateUser() {
+    public DBUser() {
     }
+
     public String getId() {
         return id;
     }

@@ -1,28 +1,35 @@
 package com.banking.app.bankingApp.service.users;
 
-import com.banking.app.bankingApp.Users.CreateUser;
-import com.banking.app.bankingApp.Users.DBUser;
-import com.banking.app.bankingApp.Users.UpdateUser;
-import com.banking.app.bankingApp.Users.User;
+import com.banking.app.bankingApp.request.users.CreateUser;
+import com.banking.app.bankingApp.request.users.DBUser;
+import com.banking.app.bankingApp.request.users.UpdateUser;
+import com.banking.app.bankingApp.response.users.User;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 public class UserManagementService {
     private UsersDatabaseService usersDatabaseService;
     public UserManagementService(){
         usersDatabaseService=new UsersDatabaseService();
     }
-    public void addUser (CreateUser createUser){
-        String randomString = UUID.randomUUID().toString();
-        createUser.setId(randomString);
-        LocalDateTime now=LocalDateTime.now();
-        createUser.setCreatedAt(now);
-        usersDatabaseService.createDbUser(createUser);
+    public User addUser (CreateUser createUser){
+        DBUser dbUser=usersDatabaseService.createDbUser(createUser);
+        User user=new User();
+        user.setId(dbUser.getId());
+        user.setFirstName(dbUser.getFirstName());
+        user.setLastName(dbUser.getLastName());
+        user.setEmail(dbUser.getEmail());
+        user.setDateOfBirth(dbUser.getDateOfBirth());
+        user.setOccupation(dbUser.getOccupation());
+        user.setCurrentAdress(dbUser.getCurrentAdress());
+        user.setPhoneNumber(dbUser.getPhoneNumber());
+        user.setCreatedAt(dbUser.getCreatedAt());
+        return user;
     }
+
     public User getUserById(String id){
     DBUser dbUser=usersDatabaseService.findUserById(id);
     User user=new User();
@@ -34,6 +41,7 @@ public class UserManagementService {
     user.setOccupation(dbUser.getOccupation());
     user.setCurrentAdress(dbUser.getCurrentAdress());
     user.setPhoneNumber(dbUser.getPhoneNumber());
+    user.setCreatedAt(dbUser.getCreatedAt());
     return user;
     }
     public void updateUser(String id, UpdateUser updateUser){
@@ -53,6 +61,7 @@ public class UserManagementService {
         user.setOccupation(allDbUsers.get(i).getOccupation());
         user.setCurrentAdress(allDbUsers.get(i).getCurrentAdress());
         user.setPhoneNumber(allDbUsers.get(i).getPhoneNumber());
+        user.setCreatedAt(allDbUsers.get(i).getCreatedAt());
         allUsers.add(user);
     }
     return allUsers;

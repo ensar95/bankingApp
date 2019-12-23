@@ -22,7 +22,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- navest sve entities -->
-        <mapping class="com.banking.app.bankingApp.Users.DBUser" />
+        <mapping class="com.banking.app.bankingApp.request.users.DBUser" />
 
     </session-factory>
 </hibernate-configuration>
