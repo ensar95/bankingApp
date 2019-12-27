@@ -1,15 +1,23 @@
 package com.banking.app.bankingApp.request.users;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class UpdateUser {
         private String id;
+        @NotEmpty
         private String firstName;
+        @NotEmpty
         private String lastName;
+        @NotEmpty
         private String email;
+        @NotEmpty
         private Date dateOfBirth;
+        @NotEmpty
         private String occupation;
+        @NotEmpty
         private String currentAdress;
+        @NotEmpty
         private String phoneNumber;
 
         public UpdateUser() {

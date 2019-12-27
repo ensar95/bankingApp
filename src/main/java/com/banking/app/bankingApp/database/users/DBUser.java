@@ -1,19 +1,28 @@
-package com.banking.app.bankingApp.request.users;
+package com.banking.app.bankingApp.database.users;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
+
 @Entity
 public class DBUser {
     @Id
     private String id;
+    @NotEmpty(message = "First name has to be entered")
     private String firstName;
+    @NotEmpty(message = "Last name has to be entered")
     private String lastName;
+    @NotEmpty(message = "Email has to be entered")
     private String email;
+    @NotEmpty(message = "Date of birth has to entered")
     private Date dateOfBirth;
+    @NotEmpty(message = "Occupation has to be entered")
     private String occupation;
+    @NotEmpty(message = "Current adress has to be entered")
     private String currentAdress;
+    @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
     private LocalDateTime createdAt;
 
