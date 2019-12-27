@@ -28,6 +28,7 @@ public class AccountController {
     @PutMapping(value = "/accounts/{id}")
     public ResponseEntity updateAccount(@RequestBody UpdateAccount updateAccount, @PathVariable("id") String id) {
         try {
+            accountManagementService.updateAccount(id, updateAccount);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
