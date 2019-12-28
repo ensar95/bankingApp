@@ -1,10 +1,14 @@
 package com.banking.app.bankingApp.database.users;
 
+import com.banking.app.bankingApp.response.accounts.Account;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class DBUser {
@@ -24,6 +28,17 @@ public class DBUser {
     private String currentAdress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
+    @OneToMany
+    private List<Account> accounts;
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
     private LocalDateTime createdAt;
 
     public DBUser() {

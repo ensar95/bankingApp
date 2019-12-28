@@ -2,6 +2,7 @@ package com.banking.app.bankingApp.database.accounts;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 public class DBAccount {
     @Id
     private String id;
+    @ManyToOne
     private String userId;
     private String owner;
     private Date expirationDate;
