@@ -3,11 +3,13 @@ package com.banking.app.bankingApp.database.accounts;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@Table(name = "DBAccount")
 public class DBAccount {
     @Id
     private String id;

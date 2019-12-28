@@ -5,12 +5,14 @@ import com.banking.app.bankingApp.response.accounts.Account;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name="DBUser")
 public class DBUser {
     @Id
     private String id;
