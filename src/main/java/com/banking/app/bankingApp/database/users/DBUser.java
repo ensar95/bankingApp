@@ -30,7 +30,7 @@ public class DBUser {
     private String currentAdress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
-    @OneToMany
+    @OneToMany(mappedBy = "DBUser")
     private List<Account> accounts;
 
     public List<Account> getAccounts() {

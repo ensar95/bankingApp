@@ -1,9 +1,6 @@
 package com.banking.app.bankingApp.database.accounts;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -14,6 +11,7 @@ public class DBAccount {
     @Id
     private String id;
     @ManyToOne
+    @JoinColumn(name="userId", nullable = false)
     private String userId;
     private String owner;
     private Date expirationDate;
