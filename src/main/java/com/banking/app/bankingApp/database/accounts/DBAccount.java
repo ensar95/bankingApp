@@ -15,7 +15,7 @@ public class DBAccount {
     private String accountName;
     private LocalDateTime createdAt;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "dbUser_id", nullable = false)
     private DBUser dbUser;
 
     public DBAccount() {

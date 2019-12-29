@@ -3,10 +3,7 @@ package com.banking.app.bankingApp.database.users;
 import com.banking.app.bankingApp.database.accounts.DBAccount;
 import com.banking.app.bankingApp.response.accounts.Account;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -31,7 +28,7 @@ public class DBUser {
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy ="DBUser" )
+    @OneToMany(mappedBy ="dbUser" )
     private List<DBAccount> dbAccount;
 
     public DBUser() {

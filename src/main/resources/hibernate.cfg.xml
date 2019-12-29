@@ -11,7 +11,6 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/BankingApp</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">pass123</property>
-
         <!--&lt;!&ndash; SQL dialect &ndash;&gt;-->
         <!--<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>-->
 
