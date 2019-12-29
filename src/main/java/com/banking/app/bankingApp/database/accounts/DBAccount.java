@@ -1,7 +1,8 @@
 package com.banking.app.bankingApp.database.accounts;
 
+import com.banking.app.bankingApp.database.users.DBUser;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -11,8 +12,8 @@ public class DBAccount {
     @Id
     private String id;
     @ManyToOne
-    @JoinColumn(name="userId", nullable = false)
-    private String userId;
+    @JoinColumn(name = "userId", nullable = false)
+    private DBUser dbUser;
     private String owner;
     private Date expirationDate;
     private String accountName;
@@ -29,12 +30,12 @@ public class DBAccount {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public DBUser getDbUser() {
+        return dbUser;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setDbUser(DBUser dbUser) {
+        this.dbUser = dbUser;
     }
 
     public String getOwner() {

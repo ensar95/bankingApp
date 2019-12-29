@@ -11,7 +11,6 @@ import java.util.List;
 
 public class AccountManagementService {
     private AccountsDatabaseService accountsDatabaseService;
-
     public AccountManagementService() {
         accountsDatabaseService = new AccountsDatabaseService();
     }
@@ -21,7 +20,7 @@ public class AccountManagementService {
         DBAccount dbAccount = new DBAccount();
         dbAccount = accountsDatabaseService.createDbAccount(createAccount);
         account.setId(dbAccount.getId());
-        account.setUserId(dbAccount.getUserId());
+        account.setUserId(dbAccount.getDbUser().getId());
         account.setOwner(dbAccount.getOwner());
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
@@ -37,7 +36,7 @@ public class AccountManagementService {
         Account account = new Account();
         DBAccount dbAccount = accountsDatabaseService.findAccountById(id);
         account.setId(dbAccount.getId());
-        account.setUserId(dbAccount.getUserId());
+        account.setUserId(dbAccount.getDbUser().getId());
         account.setOwner(dbAccount.getOwner());
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
@@ -51,7 +50,7 @@ public class AccountManagementService {
         for (int i = 0; i < dbAccounts.size(); i++) {
             Account account = new Account();
             account.setId(dbAccounts.get(i).getId());
-            account.setUserId(dbAccounts.get(i).getUserId());
+            account.setUserId(dbAccounts.get(i).getDbUser().getId());
             account.setOwner(dbAccounts.get(i).getOwner());
             account.setExpirationDate(dbAccounts.get(i).getExpirationDate());
             account.setAccountName(dbAccounts.get(i).getAccountName());

@@ -32,10 +32,8 @@ public class AccountsDatabaseService {
         DBAccount dbAccount = new DBAccount();
         String randomString = UUID.randomUUID().toString();
         dbAccount.setId(randomString);
-        dbAccount.setUserId(createAccount.getUserId());
-        DBUser dbUser;
-        dbUser = usersDatabaseService.findUserById(createAccount.getUserId());
-        dbAccount.setUserId(dbUser.getId());
+        dbAccount.setDbUser(usersDatabaseService.findUserById(createAccount.getUserId()));
+        DBUser dbUser=dbAccount.getDbUser();
         dbAccount.setOwner(dbUser.getFirstName() + " " + dbUser.getLastName());
         dbAccount.setExpirationDate(createAccount.getExpirationDate());
         LocalDateTime now = LocalDateTime.now();
@@ -74,7 +72,7 @@ public class AccountsDatabaseService {
         DBAccount dbAccount = findAccountById(id);
         dbAccount.setAccountName(updateAccount.getAccountName());
         dbAccount.setExpirationDate(updateAccount.getExpirationDate());
-        dbAccount.setUserId(updateAccount.getUserId());
+        dbAccount.setDbUser(usersDatabaseService.findUserById(updateAccount.getUserId()));
 
         session.update(dbAccount);
         transaction.commit();
