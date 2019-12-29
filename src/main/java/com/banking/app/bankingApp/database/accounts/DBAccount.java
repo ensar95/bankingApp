@@ -5,9 +5,8 @@ import com.banking.app.bankingApp.database.users.DBUser;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
-
 @Entity
-@Table(name = "DBACCOUNT")
+@Table(name="DBACCOUNT")
 public class DBAccount {
     @Id
     private String id;
