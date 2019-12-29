@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="DBUser")
+@Table(name="DBUSER")
 public class DBUser {
     @Id
     private String id;
@@ -30,7 +30,7 @@ public class DBUser {
     private String currentAdress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
-    @OneToMany(mappedBy = "DBUser")
+    @OneToMany(mappedBy = "dbuser")
     private List<Account> accounts;
 
     public List<Account> getAccounts() {

@@ -7,17 +7,17 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "DBAccount")
+@Table(name = "DBACCOUNT")
 public class DBAccount {
     @Id
     private String id;
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
-    private DBUser dbUser;
     private String owner;
     private Date expirationDate;
     private String accountName;
     private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private DBUser dbUser;
 
     public DBAccount() {
     }
