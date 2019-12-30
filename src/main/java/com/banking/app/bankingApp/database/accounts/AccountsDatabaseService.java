@@ -33,8 +33,6 @@ public class AccountsDatabaseService {
         String randomString = UUID.randomUUID().toString();
         dbAccount.setId(randomString);
         dbAccount.setDbUser(usersDatabaseService.findUserById(createAccount.getUserId()));
-        DBUser dbUser=dbAccount.getDbUser();
-        dbAccount.setOwner(dbUser.getFirstName() + " " + dbUser.getLastName());
         dbAccount.setExpirationDate(createAccount.getExpirationDate());
         LocalDateTime now = LocalDateTime.now();
         dbAccount.setAccountName(createAccount.getAccountName());
@@ -48,7 +46,7 @@ public class AccountsDatabaseService {
 
     public DBAccount findAccountById(String id) {
         Session session = sessionFactory.openSession();
-        Query<DBAccount> query = session.createQuery("select a from DBAccount a where a.dbUser_id=:accId", DBAccount.class);
+        Query<DBAccount> query = session.createQuery("select a from DBAccount a where a.id=:accId", DBAccount.class);
         query.setParameter("accId", id);
         DBAccount foundAcc = query.getSingleResult();
         session.close();

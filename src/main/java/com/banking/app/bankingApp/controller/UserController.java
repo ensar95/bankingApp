@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping(value = "/users")
 
-    public ResponseEntity<User> addUser(@Valid @RequestBody CreateUser createUser) {
+    public ResponseEntity<User> addUser(@RequestBody CreateUser createUser) {
 
         try {
 

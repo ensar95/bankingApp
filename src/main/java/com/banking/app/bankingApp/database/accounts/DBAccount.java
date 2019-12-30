@@ -10,12 +10,11 @@ import java.util.Date;
 public class DBAccount {
     @Id
     private String id;
-    private String owner;
     private Date expirationDate;
     private String accountName;
     private LocalDateTime createdAt;
     @ManyToOne
-    @JoinColumn(name = "dbUser_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;
 
     public DBAccount() {
@@ -38,11 +37,7 @@ public class DBAccount {
     }
 
     public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
+        return dbUser.getFirstName() + " " + dbUser.getLastName();
     }
 
     public Date getExpirationDate() {

@@ -20,7 +20,7 @@ public class UserManagementService {
     public User addUser(CreateUser createUser) {
         DBUser dbUser = usersDatabaseService.createDbUser(createUser);
         User user = new User();
-        user.setId(dbUser.getDbUser_id());
+        user.setId(dbUser.getId());
         user.setFirstName(dbUser.getFirstName());
         user.setLastName(dbUser.getLastName());
         user.setEmail(dbUser.getEmail());
@@ -35,7 +35,7 @@ public class UserManagementService {
     public User getUserById(String id) {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         User user = new User();
-        user.setId(dbUser.getDbUser_id());
+        user.setId(dbUser.getId());
         user.setFirstName(dbUser.getFirstName());
         user.setLastName(dbUser.getLastName());
         user.setEmail(dbUser.getEmail());
@@ -56,7 +56,7 @@ public class UserManagementService {
         List<DBUser> allDbUsers = usersDatabaseService.getAllUsers();
         for (int i = 0; i < allDbUsers.size(); i++) {
             User user = new User();
-            user.setId(allDbUsers.get(i).getDbUser_id());
+            user.setId(allDbUsers.get(i).getId());
             user.setFirstName(allDbUsers.get(i).getFirstName());
             user.setLastName(allDbUsers.get(i).getLastName());
             user.setEmail(allDbUsers.get(i).getEmail());

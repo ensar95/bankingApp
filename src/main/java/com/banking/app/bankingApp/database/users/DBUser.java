@@ -11,14 +11,14 @@ import java.util.List;
 @Table(name="DBUSER")
 public class DBUser {
     @Id
-    private String dbUser_id;
+    private String id;
     @NotEmpty(message = "First name has to be entered")
     private String firstName;
     @NotEmpty(message = "Last name has to be entered")
     private String lastName;
     @NotEmpty(message = "Email has to be entered")
     private String email;
-    @NotEmpty(message = "Date of birth has to entered")
+    //@NotEmpty(message = "Date of birth has to entered")
     private Date dateOfBirth;
     @NotEmpty(message = "Occupation has to be entered")
     private String occupation;
@@ -27,7 +27,7 @@ public class DBUser {
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy ="dbUser" )
+    @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY)
     private List<DBAccount> dbAccount;
 
     public DBUser() {
@@ -41,12 +41,12 @@ public class DBUser {
         this.dbAccount = dbAccount;
     }
 
-    public String getDbUser_id() {
-        return dbUser_id;
+    public String getId() {
+        return id;
     }
 
-    public void setDbUser_id(String dbUser_id) {
-        this.dbUser_id = dbUser_id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstName() {
