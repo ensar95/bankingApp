@@ -25,11 +25,11 @@ public class UserController {
 
     public ResponseEntity<User> addUser(@Valid @RequestBody CreateUser createUser) {
 
-        try{
+        try {
 
-            User createdUser=userManagementService.addUser(createUser);
+            User createdUser = userManagementService.addUser(createUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        }catch (ConstraintViolationException e){
+        } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 

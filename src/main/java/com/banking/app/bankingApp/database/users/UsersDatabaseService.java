@@ -27,7 +27,7 @@ public class UsersDatabaseService {
 
         DBUser dbUser = new DBUser();
         String randomString = UUID.randomUUID().toString();
-        dbUser.setId(randomString);
+        dbUser.setDbUser_id(randomString);
         dbUser.setFirstName(createUser.getFirstName());
         dbUser.setLastName(createUser.getLastName());
         dbUser.setEmail(createUser.getEmail());
@@ -84,7 +84,7 @@ public class UsersDatabaseService {
         Transaction transaction = session.beginTransaction();
 
         DBUser dbUser = new DBUser();
-        dbUser.setId(id);
+        dbUser.setDbUser_id(id);
 
         session.delete(dbUser);
         transaction.commit();

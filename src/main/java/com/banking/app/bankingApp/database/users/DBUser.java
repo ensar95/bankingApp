@@ -1,7 +1,6 @@
 package com.banking.app.bankingApp.database.users;
 
 import com.banking.app.bankingApp.database.accounts.DBAccount;
-import com.banking.app.bankingApp.response.accounts.Account;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,7 +11,7 @@ import java.util.List;
 @Table(name="DBUSER")
 public class DBUser {
     @Id
-    private String id;
+    private String dbUser_id;
     @NotEmpty(message = "First name has to be entered")
     private String firstName;
     @NotEmpty(message = "Last name has to be entered")
@@ -42,12 +41,12 @@ public class DBUser {
         this.dbAccount = dbAccount;
     }
 
-    public String getId() {
-        return id;
+    public String getDbUser_id() {
+        return dbUser_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDbUser_id(String dbUser_id) {
+        this.dbUser_id = dbUser_id;
     }
 
     public String getFirstName() {

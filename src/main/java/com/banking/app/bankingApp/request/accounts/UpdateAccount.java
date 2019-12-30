@@ -1,15 +1,11 @@
 package com.banking.app.bankingApp.request.accounts;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class UpdateAccount {
-    @NotEmpty(message = "Account name is required")
-    String accountName;
-    @NotEmpty(message = "Expiration date is required")
-    Date expirationDate;
-    @NotEmpty(message = "User ID is required")
-    String userId;
+    private String accountName;
+    private Date expirationDate;
+    private String userId;
 
     public UpdateAccount() {
     }

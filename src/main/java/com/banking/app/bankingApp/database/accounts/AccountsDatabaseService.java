@@ -48,7 +48,7 @@ public class AccountsDatabaseService {
 
     public DBAccount findAccountById(String id) {
         Session session = sessionFactory.openSession();
-        Query<DBAccount> query = session.createQuery("select a from DBAccount a where a.id=:accId", DBAccount.class);
+        Query<DBAccount> query = session.createQuery("select a from DBAccount a where a.dbUser_id=:accId", DBAccount.class);
         query.setParameter("accId", id);
         DBAccount foundAcc = query.getSingleResult();
         session.close();

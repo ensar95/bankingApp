@@ -15,6 +15,9 @@ public class User {
     private String phoneNumber;
     private LocalDateTime createdAt;
 
+    public User() {
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -85,8 +88,5 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public User() {
     }
 }

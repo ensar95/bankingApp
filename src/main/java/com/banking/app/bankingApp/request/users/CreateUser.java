@@ -1,23 +1,15 @@
 package com.banking.app.bankingApp.request.users;
 
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 public class CreateUser {
-    @NotEmpty(message = "First name is required")
     private String firstName;
-    @NotEmpty(message = "Last name is required")
     private String lastName;
-    @NotEmpty(message = "Email is required")
     private String email;
-    @NotEmpty(message = "Date of birth is required")
     private Date dateOfBirth;
-    @NotEmpty(message = "Occupation is required")
     private String occupation;
-    @NotEmpty(message = "Current adress is required")
     private String currentAdress;
-    @NotEmpty(message = "Phone number is required")
     private String phoneNumber;
 
     public CreateUser() {
