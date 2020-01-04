@@ -56,7 +56,7 @@ public class AccountsDatabaseService {
     public List<DBAccount> getAllAcc() {
         Session session = sessionFactory.openSession();
 
-        Query<DBAccount> query = session.createQuery("from DBAcount", DBAccount.class);
+        Query<DBAccount> query = session.createQuery("from DBAccount", DBAccount.class);
         List<DBAccount> allAccounts = query.getResultList();
 
         session.close();
