@@ -11,13 +11,14 @@ import java.util.List;
 
 public class AccountManagementService {
     private AccountsDatabaseService accountsDatabaseService;
+
     public AccountManagementService() {
         accountsDatabaseService = new AccountsDatabaseService();
     }
 
     public Account addAccount(CreateAccount createAccount) {
         Account account = new Account();
-        DBAccount dbAccount = accountsDatabaseService.createDbAccount(createAccount);
+        DBAccount dbAccount = accountsDatabaseService.createAccount(createAccount);
         account.setId(dbAccount.getId());
         account.setUserId(dbAccount.getDbUser().getId());
         account.setOwner(dbAccount.getOwner());
@@ -28,7 +29,7 @@ public class AccountManagementService {
     }
 
     public void updateAccount(String id, UpdateAccount updateAccount) {
-        accountsDatabaseService.updateDBAccount(id, updateAccount);
+        accountsDatabaseService.updateAccount(id, updateAccount);
     }
 
     public Account getAccountById(String id) {
@@ -45,7 +46,7 @@ public class AccountManagementService {
 
     public List<Account> getAllAc() {
         List<Account> accounts = new ArrayList<>();
-        List<DBAccount> dbAccounts = accountsDatabaseService.getAllAcc();
+        List<DBAccount> dbAccounts = accountsDatabaseService.getAllAccounts();
         for (int i = 0; i < dbAccounts.size(); i++) {
             Account account = new Account();
             account.setId(dbAccounts.get(i).getId());
@@ -60,6 +61,6 @@ public class AccountManagementService {
     }
 
     public void deleteAccountById(String id) {
-        accountsDatabaseService.deleteDBAccount(id);
+        accountsDatabaseService.deleteAccount(id);
     }
 }

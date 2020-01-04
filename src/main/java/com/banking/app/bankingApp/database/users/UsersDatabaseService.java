@@ -26,8 +26,8 @@ public class UsersDatabaseService {
         Transaction transaction = session.beginTransaction();
 
         DBUser dbUser = new DBUser();
-        String randomString = UUID.randomUUID().toString();
-        dbUser.setId(randomString);
+        String userId = UUID.randomUUID().toString();
+        dbUser.setId(userId);
         dbUser.setFirstName(createUser.getFirstName());
         dbUser.setLastName(createUser.getLastName());
         dbUser.setEmail(createUser.getEmail());

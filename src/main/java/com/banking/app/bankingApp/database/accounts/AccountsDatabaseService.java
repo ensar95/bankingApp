@@ -25,18 +25,18 @@ public class AccountsDatabaseService {
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
     }
 
-    public DBAccount createDbAccount(CreateAccount createAccount) {
+    public DBAccount createAccount(CreateAccount createAccount) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         DBAccount dbAccount = new DBAccount();
-        String randomString = UUID.randomUUID().toString();
-        dbAccount.setId(randomString);
+        String accountId = UUID.randomUUID().toString();
+        dbAccount.setId(accountId);
         dbAccount.setDbUser(usersDatabaseService.findUserById(createAccount.getUserId()));
         dbAccount.setExpirationDate(createAccount.getExpirationDate());
         LocalDateTime now = LocalDateTime.now();
-        dbAccount.setAccountName(createAccount.getAccountName());
         dbAccount.setCreatedAt(now);
+        dbAccount.setAccountName(createAccount.getAccountName());
 
         session.save(dbAccount);
         transaction.commit();
@@ -53,7 +53,7 @@ public class AccountsDatabaseService {
         return foundAcc;
     }
 
-    public List<DBAccount> getAllAcc() {
+    public List<DBAccount> getAllAccounts() {
         Session session = sessionFactory.openSession();
 
         Query<DBAccount> query = session.createQuery("from DBAccount", DBAccount.class);
@@ -63,7 +63,7 @@ public class AccountsDatabaseService {
         return allAccounts;
     }
 
-    public void updateDBAccount(String id, UpdateAccount updateAccount) {
+    public void updateAccount(String id, UpdateAccount updateAccount) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -77,7 +77,7 @@ public class AccountsDatabaseService {
         session.close();
     }
 
-    public void deleteDBAccount(String id) {
+    public void deleteAccount(String id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 

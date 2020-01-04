@@ -21,8 +21,12 @@ public class AccountController {
 
     @PostMapping(value = "/accounts")
     public ResponseEntity<Account> addAccount(@RequestBody CreateAccount createAccount) {
-        Account account = accountManagementService.addAccount(createAccount);
-        return ResponseEntity.status(HttpStatus.OK).body(account);
+        try {
+            Account account = accountManagementService.addAccount(createAccount);
+            return ResponseEntity.status(HttpStatus.OK).body(account);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PutMapping(value = "/accounts/{id}")
