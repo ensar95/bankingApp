@@ -4,6 +4,7 @@ import com.banking.app.bankingApp.database.accounts.DBAccount;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -12,13 +13,12 @@ import java.util.List;
 public class DBUser {
     @Id
     private String id;
-    @NotEmpty(message = "First name has to be entered")
     private String firstName;
-    @NotEmpty(message = "Last name has to be entered")
+    @NotEmpty(message = "  ")
     private String lastName;
     @NotEmpty(message = "Email has to be entered")
     private String email;
-    //@NotEmpty(message = "Date of birth has to entered")
+    @NotNull(message = "Date of birth has to entered")
     private Date dateOfBirth;
     @NotEmpty(message = "Occupation has to be entered")
     private String occupation;
@@ -27,7 +27,7 @@ public class DBUser {
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DBAccount> dbAccount;
 
     public DBUser() {
