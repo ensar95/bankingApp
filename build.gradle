@@ -18,7 +18,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.9.Final'
-	compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
 }
 
 test {

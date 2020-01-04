@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -22,8 +23,15 @@ public class UserController {
     @PostMapping(value = "/users")
 
     public ResponseEntity<User> addUser(@RequestBody CreateUser createUser) {
-        User createdUser=userManagementService.addUser(createUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+
+        try {
+
+            User createdUser = userManagementService.addUser(createUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
     @GetMapping(value = "/users/{id}")

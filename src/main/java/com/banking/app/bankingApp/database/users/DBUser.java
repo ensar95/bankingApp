@@ -1,23 +1,44 @@
-package com.banking.app.bankingApp.request.users;
+package com.banking.app.bankingApp.database.users;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.banking.app.bankingApp.database.accounts.DBAccount;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 @Entity
+@Table(name="DBUSER")
 public class DBUser {
     @Id
     private String id;
     private String firstName;
+    @NotEmpty(message = "  ")
     private String lastName;
+    @NotEmpty(message = "Email has to be entered")
     private String email;
+    @NotNull(message = "Date of birth has to entered")
     private Date dateOfBirth;
+    @NotEmpty(message = "Occupation has to be entered")
     private String occupation;
+    @NotEmpty(message = "Current adress has to be entered")
     private String currentAdress;
+    @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
     private LocalDateTime createdAt;
+    @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<DBAccount> dbAccount;
 
     public DBUser() {
+    }
+
+    public List<DBAccount> getDbAccount() {
+        return dbAccount;
+    }
+
+    public void setDbAccount(List<DBAccount> dbAccount) {
+        this.dbAccount = dbAccount;
     }
 
     public String getId() {
