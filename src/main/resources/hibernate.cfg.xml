@@ -24,5 +24,6 @@
         <!-- navest sve entities -->
         <mapping class="com.banking.app.bankingApp.database.users.DBUser" />
         <mapping class="com.banking.app.bankingApp.database.accounts.DBAccount"/>
+        <mapping class="com.banking.app.bankingApp.database.transactions.DBTransaction"/>
     </session-factory>
 </hibernate-configuration>

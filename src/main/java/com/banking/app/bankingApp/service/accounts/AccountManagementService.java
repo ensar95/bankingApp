@@ -44,7 +44,7 @@ public class AccountManagementService {
         return account;
     }
 
-    public List<Account> getAllAc() {
+    public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         List<DBAccount> dbAccounts = accountsDatabaseService.getAllAccounts();
         for (int i = 0; i < dbAccounts.size(); i++) {

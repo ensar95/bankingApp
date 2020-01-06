@@ -55,7 +55,7 @@ public class AccountController {
 
     @GetMapping(value = "/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
-        return ResponseEntity.status(HttpStatus.OK).body(accountManagementService.getAllAc());
+        return ResponseEntity.status(HttpStatus.OK).body(accountManagementService.getAllAccounts());
     }
 
     @DeleteMapping(value = "/accounts/{id}")
