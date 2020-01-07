@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 public class AccountController {
-    AccountManagementService accountManagementService;
+    private AccountManagementService accountManagementService;
 
     public AccountController() {
         accountManagementService = new AccountManagementService();
@@ -22,8 +22,12 @@ public class AccountController {
     @PostMapping(value = "/accounts")
     public ResponseEntity<Account> addAccount(@RequestBody CreateAccount createAccount) {
         try {
+            if(createAccount.getUserId().equals(accountManagementService.getAccountById(createAccount.getUserId()).getId())){
             Account account = accountManagementService.addAccount(createAccount);
-            return ResponseEntity.status(HttpStatus.OK).body(account);
+            return ResponseEntity.status(HttpStatus.OK).body(account);}
+            else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

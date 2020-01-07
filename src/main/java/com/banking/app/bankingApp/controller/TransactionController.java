@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 public class TransactionController {
-    TransactionManagementService transactionManagementService;
+    private TransactionManagementService transactionManagementService;
 
     public TransactionController() {
         transactionManagementService = new TransactionManagementService();
@@ -36,9 +36,9 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/transactions")
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
+    public ResponseEntity<List<Transaction>> getAccountTransactions(@PathVariable("id") String id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions());
+            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(id));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -47,6 +47,7 @@ public class TransactionController {
     @PutMapping(value = "/transactions/{id}")
     public ResponseEntity updateTransaction(@RequestBody UpdateTransaction updateTransaction, @PathVariable("id") String id) {
         try {
+            transactionManagementService.updateTransaction(id, updateTransaction);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -58,6 +59,7 @@ public class TransactionController {
     @DeleteMapping(value = "/transactions/{id}")
     public ResponseEntity deleteTransaction(@PathVariable("id") String id) {
         try {
+            transactionManagementService.deleteTransaction(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

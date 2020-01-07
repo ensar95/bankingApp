@@ -15,29 +15,29 @@ public class DBTransaction {
     private LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "source_id", nullable = false)
-    private DBAccount source;
+    private DBAccount sourceAccount;
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
-    private DBAccount destination;
+    private DBAccount destinationAccount;
 
 
     public DBTransaction() {
     }
 
-    public DBAccount getSource() {
-        return source;
+    public DBAccount getSourceAccount() {
+        return sourceAccount;
     }
 
-    public void setSource(DBAccount source) {
-        this.source = source;
+    public void setSourceAccount(DBAccount sourceAccount) {
+        this.sourceAccount = sourceAccount;
     }
 
-    public DBAccount getDestination() {
-        return destination;
+    public DBAccount getDestinationAccount() {
+        return destinationAccount;
     }
 
-    public void setDestination(DBAccount destination) {
-        this.destination = destination;
+    public void setDestinationAccount(DBAccount destinationAccount) {
+        this.destinationAccount = destinationAccount;
     }
 
 

@@ -10,8 +10,18 @@ public class Account {
     private Date expirationDate;
     private String accountName;
     private LocalDateTime createdAt;
+    private Double balance;
+
 
     public Account() {
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
     public String getId() {

@@ -20,9 +20,9 @@ public class DBAccount {
     @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;
     private Double balance;
-    @OneToMany(mappedBy = "source")
+    @OneToMany(mappedBy = "sourceAccount")
     private List<DBTransaction> incomes;
-    @OneToMany(mappedBy = "destination")
+    @OneToMany(mappedBy = "destinationAccount")
     private List<DBTransaction> expenses;
 
     public DBAccount() {

@@ -35,9 +35,9 @@ public class TransactionsDatabaseService {
         dbTransaction.setAmount(createTransaction.getAmount());
         dbTransaction.setPurpose(createTransaction.getPurpose());
         DBAccount sourceAccount = accountsDatabaseService.findAccountById(createTransaction.getSourceId());
-        dbTransaction.setSource(sourceAccount);
+        dbTransaction.setSourceAccount(sourceAccount);
         DBAccount destinationAccount = accountsDatabaseService.findAccountById(createTransaction.getDestinationId());
-        dbTransaction.setDestination(destinationAccount);
+        dbTransaction.setDestinationAccount(destinationAccount);
         LocalDateTime now = LocalDateTime.now();
         dbTransaction.setCreatedAt(now);
         session.save(dbTransaction);
@@ -55,9 +55,18 @@ public class TransactionsDatabaseService {
         return foundTransaction;
     }
 
-    public List<DBTransaction> getAllDBTransactions() {
+    public List<DBTransaction> getAllDBTransactionsWhereSource(String id) {
         Session session = sessionFactory.openSession();
-        Query<DBTransaction> query = session.createQuery("from DBTransaction", DBTransaction.class);
+        Query<DBTransaction> query = session.createQuery("select a from DBTransaction a where a.source_id=:tranId", DBTransaction.class);
+        query.setParameter("tranId",id);
+        List<DBTransaction> dbTransactions = query.getResultList();
+        session.close();
+        return dbTransactions;
+    }
+    public List<DBTransaction> getAllDBTransactionsWhereDestination(String id){
+        Session session = sessionFactory.openSession();
+        Query<DBTransaction> query = session.createQuery("select a from DBTransaction a where a.destination_id=:tranId", DBTransaction.class);
+        query.setParameter("tranId",id);
         List<DBTransaction> dbTransactions = query.getResultList();
         session.close();
         return dbTransactions;
@@ -70,8 +79,8 @@ public class TransactionsDatabaseService {
         DBTransaction dbTransaction = getDBTransactionById(id);
         dbTransaction.setAmount(updateTransaction.getAmount());
         dbTransaction.setPurpose(updateTransaction.getPurpose());
-        dbTransaction.setSource(accountsDatabaseService.findAccountById(updateTransaction.getSourceId()));
-        dbTransaction.setDestination(accountsDatabaseService.findAccountById(updateTransaction.getDestinationId()));
+        dbTransaction.setSourceAccount(accountsDatabaseService.findAccountById(updateTransaction.getSourceId()));
+        dbTransaction.setDestinationAccount(accountsDatabaseService.findAccountById(updateTransaction.getDestinationId()));
         session.update(dbTransaction);
         transaction.commit();
         session.close();
