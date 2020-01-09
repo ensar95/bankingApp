@@ -4,16 +4,20 @@ import com.banking.app.bankingApp.database.accounts.AccountsDatabaseService;
 import com.banking.app.bankingApp.database.accounts.DBAccount;
 import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseService;
+import com.banking.app.bankingApp.response.accounts.Account;
+import com.banking.app.bankingApp.service.accounts.AccountManagementService;
 
 import java.util.List;
 
 public class BalanceManagementService {
+    private AccountManagementService accountManagementService;
     private AccountsDatabaseService accountsDatabaseService;
     private TransactionsDatabaseService transactionsDatabaseService;
 
     public BalanceManagementService() {
         transactionsDatabaseService = new TransactionsDatabaseService();
         accountsDatabaseService = new AccountsDatabaseService();
+        accountManagementService = new AccountManagementService();
     }
 
     public Double getIncome(String id) {
@@ -37,9 +41,9 @@ public class BalanceManagementService {
     }
 
     public Double getBalance(String id) {
-        DBAccount dbAccount = accountsDatabaseService.findAccountById(id);
-        dbAccount.setBalance(getIncome(id) - getExpenses(id));
-        return dbAccount.getBalance();
+        Account account = accountManagementService.getAccountById(id);
+        account.setBalance(getIncome(id) - getExpenses(id));
+        return account.getBalance();
 
     }
 }

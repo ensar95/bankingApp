@@ -21,24 +21,34 @@ public class TransactionController {
 
     @PostMapping(value = "/transactions")
     public ResponseEntity<Transaction> addTransaction(@RequestBody CreateTransaction createTransaction) {
-        Transaction transaction = transactionManagementService.addTransaction(createTransaction);
-        return ResponseEntity.status(HttpStatus.OK).body(transaction);
-    }
-
-    @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Transaction> getTransaction(@PathVariable("id") String id) {
         try {
-            Transaction transaction = transactionManagementService.getTransactionById(id);
+            Transaction transaction = transactionManagementService.addTransaction(createTransaction);
             return ResponseEntity.status(HttpStatus.OK).body(transaction);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GetMapping(value = "/transactions")
-    public ResponseEntity<List<Transaction>> getAccountTransactions(@PathVariable("id") String id) {
+    @GetMapping(value = "/transactions/{id}")
+    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("id") String id) {
+        try {
+            Transaction transaction = transactionManagementService.getTransactionById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(transaction);
+        } catch (NoResultException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping(value = "/transactions/{id}")
+    public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("id") String id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(id));
+        } catch (NoResultException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

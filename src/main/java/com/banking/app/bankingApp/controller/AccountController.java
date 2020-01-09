@@ -22,12 +22,8 @@ public class AccountController {
     @PostMapping(value = "/accounts")
     public ResponseEntity<Account> addAccount(@RequestBody CreateAccount createAccount) {
         try {
-            if(createAccount.getUserId().equals(accountManagementService.getAccountById(createAccount.getUserId()).getId())){
             Account account = accountManagementService.addAccount(createAccount);
-            return ResponseEntity.status(HttpStatus.OK).body(account);}
-            else{
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(account);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

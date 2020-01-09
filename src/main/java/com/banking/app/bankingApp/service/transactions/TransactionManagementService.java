@@ -5,28 +5,37 @@ import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseServ
 import com.banking.app.bankingApp.request.transactions.CreateTransaction;
 import com.banking.app.bankingApp.request.transactions.UpdateTransaction;
 import com.banking.app.bankingApp.response.transactions.Transaction;
+import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionManagementService {
     private TransactionsDatabaseService transactionsDatabaseService;
+    private BalanceManagementService balanceManagementService;
 
     public TransactionManagementService() {
         transactionsDatabaseService = new TransactionsDatabaseService();
+        balanceManagementService = new BalanceManagementService();
     }
 
     public Transaction addTransaction(CreateTransaction createTransaction) {
         DBTransaction dbTransaction = transactionsDatabaseService.addDBTransaction(createTransaction);
 
-        Transaction transaction = new Transaction();
-        transaction.setId(dbTransaction.getId());
-        transaction.setAmount(dbTransaction.getAmount());
-        transaction.setSourceId(dbTransaction.getSourceAccount().getId());
-        transaction.setDestinationId(dbTransaction.getDestinationAccount().getId());
-        transaction.setPurpose(dbTransaction.getPurpose());
-        transaction.setCreatedAt(dbTransaction.getCreatedAt());
-        return transaction;
+        if (dbTransaction.getAmount() <= balanceManagementService.getBalance(createTransaction.getSourceId())) {
+            Transaction transaction = new Transaction();
+            transaction.setId(dbTransaction.getId());
+            transaction.setAmount(dbTransaction.getAmount());
+            transaction.setSourceId(dbTransaction.getSourceAccount().getId());
+            transaction.setDestinationId(dbTransaction.getDestinationAccount().getId());
+            transaction.setPurpose(dbTransaction.getPurpose());
+            transaction.setCreatedAt(dbTransaction.getCreatedAt());
+            return transaction;
+        } else {
+
+            throw new IllegalStateException();
+        }
     }
 
     public Transaction getTransactionById(String id) {
@@ -54,6 +63,7 @@ public class TransactionManagementService {
             transaction.setSourceId(dbTransactions.get(i).getSourceAccount().getId());
             transaction.setDestinationId(dbTransactions.get(i).getDestinationAccount().getId());
             transaction.setCreatedAt(dbTransactions.get(i).getCreatedAt());
+            transactions1.add(transaction);
         }
         for (int i = 0; i < dbTransactions.size(); i++) {
             Transaction transaction = new Transaction();
@@ -63,8 +73,9 @@ public class TransactionManagementService {
             transaction.setSourceId(dbTransactions1.get(i).getSourceAccount().getId());
             transaction.setDestinationId(dbTransactions1.get(i).getDestinationAccount().getId());
             transaction.setCreatedAt(dbTransactions1.get(i).getCreatedAt());
+            transactions.add(transaction);
         }
-        for (int i=0; i<dbTransactions.size()+dbTransactions1.size();i++){
+        for (int i = 0; i < dbTransactions.size() + dbTransactions1.size(); i++) {
             transactions.add(transactions1.get(i));
         }
         return transactions;

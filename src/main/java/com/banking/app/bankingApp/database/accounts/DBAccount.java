@@ -19,21 +19,12 @@ public class DBAccount {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;
-    private Double balance;
     @OneToMany(mappedBy = "sourceAccount")
     private List<DBTransaction> incomes;
     @OneToMany(mappedBy = "destinationAccount")
     private List<DBTransaction> expenses;
 
     public DBAccount() {
-    }
-
-    public Double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(Double balance) {
-        this.balance = balance;
     }
 
     public List<DBTransaction> getIncomes() {
