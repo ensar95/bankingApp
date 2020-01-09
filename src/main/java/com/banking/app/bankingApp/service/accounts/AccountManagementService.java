@@ -28,6 +28,7 @@ public class AccountManagementService {
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
         account.setCreatedAt(dbAccount.getCreatedAt());
+        account.setBalance(balanceManagementService.getBalance(account.getId()));
         return account;
     }
 
