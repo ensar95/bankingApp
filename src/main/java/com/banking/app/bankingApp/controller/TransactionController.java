@@ -23,7 +23,7 @@ public class TransactionController {
     public ResponseEntity<Transaction> addTransaction(@RequestBody CreateTransaction createTransaction) {
         try {
             Transaction transaction = transactionManagementService.addTransaction(createTransaction);
-            return ResponseEntity.status(HttpStatus.OK).body(transaction);
+            return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
@@ -31,10 +31,10 @@ public class TransactionController {
         }
     }
 
-    @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("id") String id) {
+    @GetMapping(value = "/transactions/{accountId}")
+    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("accountId") String accountId) {
         try {
-            Transaction transaction = transactionManagementService.getTransactionById(id);
+            Transaction transaction = transactionManagementService.getTransactionById(accountId);
             return ResponseEntity.status(HttpStatus.OK).body(transaction);
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -59,6 +59,8 @@ public class TransactionController {
         try {
             transactionManagementService.updateTransaction(id, updateTransaction);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (RuntimeException e) {

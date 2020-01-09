@@ -1,29 +1,35 @@
 package com.banking.app.bankingApp.service.transactions;
 
+import com.banking.app.bankingApp.database.accounts.AccountsDatabaseService;
 import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseService;
 import com.banking.app.bankingApp.request.transactions.CreateTransaction;
 import com.banking.app.bankingApp.request.transactions.UpdateTransaction;
+import com.banking.app.bankingApp.response.accounts.Account;
 import com.banking.app.bankingApp.response.transactions.Transaction;
+import com.banking.app.bankingApp.service.accounts.AccountManagementService;
 import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 
-import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionManagementService {
     private TransactionsDatabaseService transactionsDatabaseService;
     private BalanceManagementService balanceManagementService;
+    private AccountsDatabaseService accountsDatabaseService;
+    private AccountManagementService accountManagementService;
 
     public TransactionManagementService() {
+        accountManagementService = new AccountManagementService();
+        accountsDatabaseService = new AccountsDatabaseService();
         transactionsDatabaseService = new TransactionsDatabaseService();
         balanceManagementService = new BalanceManagementService();
     }
 
     public Transaction addTransaction(CreateTransaction createTransaction) {
-        DBTransaction dbTransaction = transactionsDatabaseService.addDBTransaction(createTransaction);
-
-        if (dbTransaction.getAmount() <= balanceManagementService.getBalance(createTransaction.getSourceId())) {
+        Account account = accountManagementService.getAccountById(createTransaction.getSourceId());
+        if (account.getBalance() <= balanceManagementService.getBalance(createTransaction.getSourceId())) {
+            DBTransaction dbTransaction = transactionsDatabaseService.addDBTransaction(createTransaction);
             Transaction transaction = new Transaction();
             transaction.setId(dbTransaction.getId());
             transaction.setAmount(dbTransaction.getAmount());
@@ -82,7 +88,12 @@ public class TransactionManagementService {
     }
 
     public void updateTransaction(String id, UpdateTransaction updateTransaction) {
-        transactionsDatabaseService.updateDBTransaction(updateTransaction, id);
+        Account account = accountManagementService.getAccountById(updateTransaction.getSourceId());
+        if (account.getBalance() <= balanceManagementService.getBalance(updateTransaction.getSourceId())) {
+            transactionsDatabaseService.updateDBTransaction(updateTransaction, id);
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     public void deleteTransaction(String id) {
