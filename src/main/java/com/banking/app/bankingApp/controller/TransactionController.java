@@ -29,7 +29,7 @@ public class TransactionController {
         }
     }
 
-    @GetMapping(value = "/transactions/{accountId}/details")
+    @GetMapping(value = "/transactions/{id}")
     public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("accountId") String accountId) {
         try {
             Transaction transaction = transactionManagementService.getTransactionById(accountId);
@@ -41,7 +41,7 @@ public class TransactionController {
         }
     }
 
-    @GetMapping(value = "/transactions/{id}")
+    @GetMapping(value = "/transactions/{accountId}/details")
     public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("id") String id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(id));
