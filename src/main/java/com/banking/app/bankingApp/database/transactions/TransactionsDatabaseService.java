@@ -16,13 +16,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class TransactionsDatabaseService {
+    private static final TransactionsDatabaseService transactionDatabaseService=new TransactionsDatabaseService();
     private AccountsDatabaseService accountsDatabaseService;
     private SessionFactory sessionFactory;
 
     public TransactionsDatabaseService() {
-        accountsDatabaseService = new AccountsDatabaseService();
+        accountsDatabaseService = AccountsDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
+    }
+    public static TransactionsDatabaseService getInstance(){
+        return transactionDatabaseService;
     }
 
     public DBTransaction addDBTransaction(CreateTransaction createTransaction) {

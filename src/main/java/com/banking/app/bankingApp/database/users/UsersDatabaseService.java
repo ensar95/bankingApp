@@ -13,12 +13,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/* UsersDatabaseService is singleton service */
+
 public class UsersDatabaseService {
     private SessionFactory sessionFactory;
 
-    public UsersDatabaseService() {
+    private static final UsersDatabaseService userDatabaseService = new UsersDatabaseService();
+
+    private UsersDatabaseService() {
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
+    }
+
+    public static UsersDatabaseService getInstance(){
+        return userDatabaseService;
     }
 
     public DBUser createDbUser(CreateUser createUser) {

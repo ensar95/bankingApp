@@ -11,10 +11,15 @@ import java.util.List;
 
 
 public class UserManagementService {
+    private static final UserManagementService userManagementService = new UserManagementService();
     private UsersDatabaseService usersDatabaseService;
 
     public UserManagementService() {
-        usersDatabaseService = new UsersDatabaseService();
+        usersDatabaseService = UsersDatabaseService.getInstance();
+    }
+
+    public static UserManagementService getInstance() {
+        return userManagementService;
     }
 
     public User addUser(CreateUser createUser) {

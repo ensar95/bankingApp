@@ -10,14 +10,19 @@ import com.banking.app.bankingApp.service.accounts.AccountManagementService;
 import java.util.List;
 
 public class BalanceManagementService {
+    private static final BalanceManagementService balanceManagementService = new BalanceManagementService();
     private AccountManagementService accountManagementService;
     private AccountsDatabaseService accountsDatabaseService;
     private TransactionsDatabaseService transactionsDatabaseService;
 
     public BalanceManagementService() {
-        transactionsDatabaseService = new TransactionsDatabaseService();
-        accountsDatabaseService = new AccountsDatabaseService();
-        accountManagementService = new AccountManagementService();
+        transactionsDatabaseService =  TransactionsDatabaseService.getInstance();
+        accountsDatabaseService = AccountsDatabaseService.getInstance();
+        accountManagementService = AccountManagementService.getInstance();
+    }
+
+    public static BalanceManagementService getInstance() {
+        return balanceManagementService;
     }
 
     public Double getIncome(String id) {

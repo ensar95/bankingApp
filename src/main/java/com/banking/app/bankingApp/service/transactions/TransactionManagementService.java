@@ -1,6 +1,5 @@
 package com.banking.app.bankingApp.service.transactions;
 
-import com.banking.app.bankingApp.database.accounts.AccountsDatabaseService;
 import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseService;
 import com.banking.app.bankingApp.request.transactions.CreateTransaction;
@@ -14,16 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionManagementService {
+    private static final TransactionManagementService transactionManagementService = new TransactionManagementService();
     private TransactionsDatabaseService transactionsDatabaseService;
     private BalanceManagementService balanceManagementService;
-    private AccountsDatabaseService accountsDatabaseService;
     private AccountManagementService accountManagementService;
 
     public TransactionManagementService() {
-        accountManagementService = new AccountManagementService();
-        accountsDatabaseService = new AccountsDatabaseService();
-        transactionsDatabaseService = new TransactionsDatabaseService();
-        balanceManagementService = new BalanceManagementService();
+        accountManagementService = AccountManagementService.getInstance();
+        transactionsDatabaseService = TransactionsDatabaseService.getInstance();
+        balanceManagementService = BalanceManagementService.getInstance();
+    }
+
+    public static TransactionManagementService getInstance() {
+        return transactionManagementService;
     }
 
     public Transaction addTransaction(CreateTransaction createTransaction) {
@@ -40,7 +42,7 @@ public class TransactionManagementService {
             return transaction;
         } else {
 
-            throw new IllegalStateException();
+            throw new RuntimeException();
         }
     }
 

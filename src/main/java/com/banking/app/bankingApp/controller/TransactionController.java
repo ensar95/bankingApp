@@ -16,7 +16,7 @@ public class TransactionController {
     private TransactionManagementService transactionManagementService;
 
     public TransactionController() {
-        transactionManagementService = new TransactionManagementService();
+        transactionManagementService = TransactionManagementService.getInstance();
     }
 
     @PostMapping(value = "/transactions")
@@ -24,14 +24,12 @@ public class TransactionController {
         try {
             Transaction transaction = transactionManagementService.addTransaction(createTransaction);
             return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @GetMapping(value = "/transactions/{accountId}")
+    @GetMapping(value = "/transactions/{accountId}/details")
     public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("accountId") String accountId) {
         try {
             Transaction transaction = transactionManagementService.getTransactionById(accountId);
@@ -55,7 +53,8 @@ public class TransactionController {
     }
 
     @PutMapping(value = "/transactions/{id}")
-    public ResponseEntity updateTransaction(@RequestBody UpdateTransaction updateTransaction, @PathVariable("id") String id) {
+    public ResponseEntity updateTransaction(@RequestBody UpdateTransaction
+                                                    updateTransaction, @PathVariable("id") String id) {
         try {
             transactionManagementService.updateTransaction(id, updateTransaction);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

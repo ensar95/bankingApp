@@ -16,7 +16,7 @@ public class AccountController {
     private AccountManagementService accountManagementService;
 
     public AccountController() {
-        accountManagementService = new AccountManagementService();
+        accountManagementService = AccountManagementService.getInstance();
     }
 
     @PostMapping(value = "/accounts")
