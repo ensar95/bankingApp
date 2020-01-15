@@ -24,15 +24,17 @@ public class TransactionController {
         try {
             Transaction transaction = transactionManagementService.addTransaction(createTransaction);
             return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
-        } catch (RuntimeException e) {
+        }catch(IllegalStateException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("accountId") String accountId) {
+    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("id") String id) {
         try {
-            Transaction transaction = transactionManagementService.getTransactionById(accountId);
+            Transaction transaction = transactionManagementService.getTransactionById(id);
             return ResponseEntity.status(HttpStatus.OK).body(transaction);
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -42,9 +44,9 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/transactions/{accountId}/details")
-    public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("id") String id) {
+    public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("accountId") String accountId) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(id));
+            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(accountId));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (RuntimeException e) {

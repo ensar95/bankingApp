@@ -19,9 +19,9 @@ public class DBAccount {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;
-    @OneToMany(mappedBy = "sourceAccount")
+    @OneToMany(mappedBy = "sourceAccountId")
     private List<DBTransaction> incomes;
-    @OneToMany(mappedBy = "destinationAccount")
+    @OneToMany(mappedBy = "destinationAccountId")
     private List<DBTransaction> expenses;
 
     public DBAccount() {
