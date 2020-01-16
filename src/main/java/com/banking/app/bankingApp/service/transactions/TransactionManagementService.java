@@ -28,18 +28,15 @@ public class TransactionManagementService {
         return transactionManagementService;
     }
 
-    private void verifyTransaction(String id) {
-        Account account = accountManagementService.getAccountById(id);
-        if (account.getBalance() - balanceManagementService.getBalance(id) < 0) {
-            throw new IllegalStateException();
-        } else if (account.getBalance() + balanceManagementService.getBalance(id) < 0) {
+    private void verifyTransaction(String sourceAccountId, Double amount) {
+        Account sourceAccount = accountManagementService.getAccountById(sourceAccountId);
+        if (sourceAccount.getBalance() < amount) {
             throw new IllegalStateException();
         }
     }
 
     public Transaction addTransaction(CreateTransaction createTransaction) {
-        Account account = accountManagementService.getAccountById(createTransaction.getSourceId());
-        verifyTransaction(account.getId());
+        verifyTransaction(createTransaction.getSourceId(), createTransaction.getAmount());
         DBTransaction dbTransaction = transactionsDatabaseService.addDBTransaction(createTransaction);
         Transaction transaction = new Transaction();
         transaction.setId(dbTransaction.getId());
@@ -92,8 +89,7 @@ public class TransactionManagementService {
     }
 
     public void updateTransaction(String id, UpdateTransaction updateTransaction) {
-        Account account = accountManagementService.getAccountById(updateTransaction.getSourceId());
-        verifyTransaction(updateTransaction.getSourceId());
+        verifyTransaction(updateTransaction.getSourceId(),updateTransaction.getAmount());
         transactionsDatabaseService.updateDBTransaction(updateTransaction, id);
     }
 
