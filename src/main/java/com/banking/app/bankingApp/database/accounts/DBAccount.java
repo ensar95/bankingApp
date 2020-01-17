@@ -1,12 +1,15 @@
 package com.banking.app.bankingApp.database.accounts;
 
+import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.users.DBUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+
 @Entity
-@Table(name="DBACCOUNT")
+@Table(name = "DBACCOUNT")
 public class DBAccount {
     @Id
     private String id;
@@ -16,9 +19,30 @@ public class DBAccount {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;
+    @OneToMany(mappedBy = "sourceAccountId")
+    private List<DBTransaction> incomes;
+    @OneToMany(mappedBy = "destinationAccountId")
+    private List<DBTransaction> expenses;
 
     public DBAccount() {
     }
+
+    public List<DBTransaction> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(List<DBTransaction> incomes) {
+        this.incomes = incomes;
+    }
+
+    public List<DBTransaction> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<DBTransaction> expenses) {
+        this.expenses = expenses;
+    }
+
 
     public String getId() {
         return id;

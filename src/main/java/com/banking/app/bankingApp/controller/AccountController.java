@@ -13,17 +13,17 @@ import java.util.List;
 
 @RestController
 public class AccountController {
-    AccountManagementService accountManagementService;
+    private AccountManagementService accountManagementService;
 
     public AccountController() {
-        accountManagementService = new AccountManagementService();
+        accountManagementService = AccountManagementService.getInstance();
     }
 
     @PostMapping(value = "/accounts")
     public ResponseEntity<Account> addAccount(@RequestBody CreateAccount createAccount) {
         try {
             Account account = accountManagementService.addAccount(createAccount);
-            return ResponseEntity.status(HttpStatus.OK).body(account);
+            return ResponseEntity.status(HttpStatus.CREATED).body(account);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -55,7 +55,7 @@ public class AccountController {
 
     @GetMapping(value = "/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
-        return ResponseEntity.status(HttpStatus.OK).body(accountManagementService.getAllAc());
+        return ResponseEntity.status(HttpStatus.OK).body(accountManagementService.getAllAccounts());
     }
 
     @DeleteMapping(value = "/accounts/{id}")

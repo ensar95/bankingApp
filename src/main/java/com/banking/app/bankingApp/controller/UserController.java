@@ -17,7 +17,7 @@ public class UserController {
     private UserManagementService userManagementService;
 
     public UserController() {
-        userManagementService = new UserManagementService();
+        userManagementService =  UserManagementService.getInstance();
     }
 
     @PostMapping(value = "/users")

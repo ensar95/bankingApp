@@ -1,24 +1,45 @@
 package com.banking.app.bankingApp.database.transactions;
 
-import com.banking.app.bankingApp.response.accounts.Account;
+import com.banking.app.bankingApp.database.accounts.DBAccount;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
+@Table(name = "DBTRANSACTION")
 public class DBTransaction {
     @Id
     private String id;
     private Double amount;
     private String purpose;
     private LocalDateTime createdAt;
-    private List<Account> sourceAccount;
-    private List<Account> destinationAccount;
+    @ManyToOne
+    @JoinColumn(name = "sourceAccountId", nullable = false)
+    private DBAccount sourceAccountId;
+    @ManyToOne
+    @JoinColumn(name = "destinationAccountId", nullable = false)
+    private DBAccount destinationAccountId;
+
 
     public DBTransaction() {
     }
+
+    public DBAccount getSourceAccountId() {
+        return sourceAccountId;
+    }
+
+    public void setSourceAccountId(DBAccount sourceAccountId) {
+        this.sourceAccountId = sourceAccountId;
+    }
+
+    public DBAccount getDestinationAccountId() {
+        return destinationAccountId;
+    }
+
+    public void setDestinationAccountId(DBAccount destinationAccountId) {
+        this.destinationAccountId = destinationAccountId;
+    }
+
 
     public String getId() {
         return id;
@@ -50,21 +71,5 @@ public class DBTransaction {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public List<Account> getSourceAccount() {
-        return sourceAccount;
-    }
-
-    public void setSourceAccount(List<Account> sourceAccount) {
-        this.sourceAccount = sourceAccount;
-    }
-
-    public List<Account> getDestinationAccount() {
-        return destinationAccount;
-    }
-
-    public void setDestinationAccount(List<Account> destinationAccount) {
-        this.destinationAccount = destinationAccount;
     }
 }

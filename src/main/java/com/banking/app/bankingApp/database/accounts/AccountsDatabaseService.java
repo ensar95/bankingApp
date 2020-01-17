@@ -1,6 +1,5 @@
 package com.banking.app.bankingApp.database.accounts;
 
-import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 import com.banking.app.bankingApp.request.accounts.CreateAccount;
 import com.banking.app.bankingApp.request.accounts.UpdateAccount;
@@ -16,13 +15,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class AccountsDatabaseService {
+    private static final AccountsDatabaseService accountsDatabaseService = new AccountsDatabaseService();
     private UsersDatabaseService usersDatabaseService;
     private SessionFactory sessionFactory;
-
     public AccountsDatabaseService() {
-        usersDatabaseService = new UsersDatabaseService();
+        usersDatabaseService = UsersDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
+    }
+
+    public static AccountsDatabaseService getInstance() {
+        return accountsDatabaseService;
     }
 
     public DBAccount createAccount(CreateAccount createAccount) {
