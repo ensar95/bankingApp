@@ -2,9 +2,9 @@ package com.banking.app.bankingApp.database.accounts;
 
 import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.users.DBUser;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class DBAccount {
     private String id;
     private Date expirationDate;
     private String accountName;
-    private LocalDateTime createdAt;
+    private org.joda.time.LocalDateTime createdAt;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;

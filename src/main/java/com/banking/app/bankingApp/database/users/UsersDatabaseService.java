@@ -7,9 +7,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.joda.time.LocalDateTime;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +43,7 @@ public class UsersDatabaseService {
         dbUser.setOccupation(createUser.getOccupation());
         dbUser.setCurrentAdress(createUser.getCurrentAdress());
         dbUser.setPhoneNumber(createUser.getPhoneNumber());
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now=LocalDateTime.now();
         dbUser.setCreatedAt(now);
 
         session.save(dbUser);

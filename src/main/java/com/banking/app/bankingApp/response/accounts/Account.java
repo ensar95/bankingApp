@@ -1,6 +1,7 @@
 package com.banking.app.bankingApp.response.accounts;
 
-import java.time.LocalDateTime;
+import org.joda.time.LocalDateTime;
+
 import java.util.Date;
 
 public class Account {
@@ -9,7 +10,7 @@ public class Account {
     private String owner;
     private Date expirationDate;
     private String accountName;
-    private LocalDateTime createdAt;
+    private org.joda.time.LocalDateTime createdAt;
     private Double balance;
 
 

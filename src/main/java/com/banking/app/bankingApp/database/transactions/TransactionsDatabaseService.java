@@ -9,9 +9,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +44,7 @@ public class TransactionsDatabaseService {
         dbTransaction.setSourceAccountId(sourceAccount);
         DBAccount destinationAccount = accountsDatabaseService.findAccountById(createTransaction.getDestinationId());
         dbTransaction.setDestinationAccountId(destinationAccount);
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now= LocalDateTime.now();
         dbTransaction.setCreatedAt(now);
         session.save(dbTransaction);
         transaction.commit();
@@ -96,5 +98,14 @@ public class TransactionsDatabaseService {
         session.delete(dbTransaction);
         transaction.commit();
         session.close();
+    }
+    public List<DBTransaction> getAllTransactionsByDate(org.joda.time.LocalDateTime startDate, org.joda.time.LocalDateTime endDate){
+        Session session=sessionFactory.openSession();
+        Query<DBTransaction> query=session.createQuery("from DBTransaction t where t.createdAt>= :start and t.createdAt< :end", DBTransaction.class);
+        query.setParameter("start", startDate);
+        query.setParameter("end",endDate);
+        List<DBTransaction> dbTransactions =query.getResultList();
+        session.close();
+        return dbTransactions;
     }
 }

@@ -1,7 +1,8 @@
 package com.banking.app.bankingApp.response.users;
 
 
-import java.time.LocalDateTime;
+import org.joda.time.LocalDateTime;
+
 import java.util.Date;
 
 public class User {
@@ -13,7 +14,7 @@ public class User {
     private String occupation;
     private String currentAdress;
     private String phoneNumber;
-    private LocalDateTime createdAt;
+    private org.joda.time.LocalDateTime createdAt;
 
     public User() {
     }
