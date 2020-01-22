@@ -3,11 +3,13 @@ package com.banking.app.bankingApp.service.analitics;
 import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseService;
 import com.banking.app.bankingApp.response.analitics.Analitics;
+import com.banking.app.bankingApp.service.accounts.AccountManagementService;
 import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +17,10 @@ public class AnaliticsManagementService {
     private static final AnaliticsManagementService analiticsManagementService = new AnaliticsManagementService();
     private BalanceManagementService balanceManagementService;
     private TransactionsDatabaseService transactionsDatabaseService;
+    private AccountManagementService accountManagementService;
 
     private AnaliticsManagementService() {
+        accountManagementService = AccountManagementService.getInstance();
         transactionsDatabaseService = TransactionsDatabaseService.getInstance();
         balanceManagementService = BalanceManagementService.getInstance();
     }
@@ -26,10 +30,11 @@ public class AnaliticsManagementService {
     }
 
     public List<Analitics> getAnalitics(String accountId, String startDate, String endDate) {
+        validateAnaliticsAccountId(accountId);
         DateTimeFormatter formatterJodaLocalDateTime = DateTimeFormat.forPattern("yyyy-MM");
         LocalDateTime startingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(startDate));
         LocalDateTime endingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(endDate));
-        validateAnalitics(startingDate, endingDate);
+        validateAnaliticsDate(startingDate, endingDate);
         LocalDateTime currentDate = startingDate;
         LocalDateTime nextDate = currentDate.plusMonths(1);
         List<Analitics> analiticsList = new ArrayList<>();
@@ -72,9 +77,16 @@ public class AnaliticsManagementService {
         return analiticsList;
     }
 
-    private void validateAnalitics(LocalDateTime startDate, LocalDateTime endDate) {
+    private void validateAnaliticsDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (!(startDate.isBefore(endDate))) {
             throw new IllegalStateException();
+        }
+    }
+
+    private void validateAnaliticsAccountId(String id) {
+        if ((id).equals(accountManagementService.getAccountById(id).getId())) {
+        } else {
+            throw new NoResultException();
         }
     }
 }

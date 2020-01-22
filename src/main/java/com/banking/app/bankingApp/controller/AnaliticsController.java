@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @RestController
@@ -27,6 +28,8 @@ public class AnaliticsController {
             @RequestParam(name = "endDate", required = true) String endDate) {
       try {
           return ResponseEntity.status(HttpStatus.OK).body(analiticsManagementService.getAnalitics(accountId, startDate, endDate));
+      }catch (NoResultException e){
+          return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
       }catch (IllegalStateException e){
           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
       }catch(RuntimeException e){
