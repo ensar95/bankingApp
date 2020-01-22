@@ -8,7 +8,7 @@ public class Transaction {
     private String purpose;
     private String sourceId;
     private String destinationId;
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     public Transaction() {
     }

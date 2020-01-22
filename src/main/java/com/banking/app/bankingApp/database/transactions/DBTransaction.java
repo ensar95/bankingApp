@@ -12,7 +12,7 @@ public class DBTransaction {
     private String id;
     private Double amount;
     private String purpose;
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "sourceAccountId", nullable = false)
     private DBAccount sourceAccountId;

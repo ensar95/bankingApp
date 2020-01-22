@@ -1,13 +1,13 @@
-package com.banking.app.bankingApp.response.analitics;
+package com.banking.app.bankingApp.response.analytics;
 
 import java.time.LocalDateTime;
 
-public class Analitics {
-    private java.time.LocalDateTime date;
+public class Analytics {
+    private LocalDateTime date;
     private Double income;
     private Double expenses;
 
-    public Analitics() {
+    public Analytics() {
     }
 
     public LocalDateTime getDate() {

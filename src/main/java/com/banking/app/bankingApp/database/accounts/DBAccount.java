@@ -15,7 +15,7 @@ public class DBAccount {
     private String id;
     private Date expirationDate;
     private String accountName;
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private DBUser dbUser;

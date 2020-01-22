@@ -13,7 +13,7 @@ public class User {
     private String occupation;
     private String currentAdress;
     private String phoneNumber;
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     public User() {
     }

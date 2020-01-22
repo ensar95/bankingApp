@@ -1,7 +1,7 @@
 package com.banking.app.bankingApp.controller;
 
-import com.banking.app.bankingApp.response.analitics.Analitics;
-import com.banking.app.bankingApp.service.analitics.AnaliticsManagementService;
+import com.banking.app.bankingApp.response.analytics.Analytics;
+import com.banking.app.bankingApp.service.analytics.AnalyticsManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,21 +13,21 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 @RestController
-public class AnaliticsController {
+public class AnalyticsController {
 
-    private AnaliticsManagementService analiticsManagementService;
+    private AnalyticsManagementService analyticsManagementService;
 
-    public AnaliticsController() {
-        analiticsManagementService = AnaliticsManagementService.getInstance();
+    public AnalyticsController() {
+        analyticsManagementService = AnalyticsManagementService.getInstance();
     }
 
-    @GetMapping(value = "/analitics/{accountId}")
-    public ResponseEntity<List<Analitics>> getAnalitics(
+    @GetMapping(value = "/analytics/{accountId}")
+    public ResponseEntity<List<Analytics>> getAnalitics(
             @PathVariable("accountId") String accountId,
             @RequestParam(name = "startDate", required = true) String startDate,
             @RequestParam(name = "endDate", required = true) String endDate) {
       try {
-          return ResponseEntity.status(HttpStatus.OK).body(analiticsManagementService.getAnalitics(accountId, startDate, endDate));
+          return ResponseEntity.status(HttpStatus.OK).body(analyticsManagementService.getAnalitics(accountId, startDate, endDate));
       }catch (NoResultException e){
           return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
       }catch (IllegalStateException e){

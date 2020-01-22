@@ -26,7 +26,7 @@ public class DBUser {
     private String currentAdress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DBAccount> dbAccount;
 

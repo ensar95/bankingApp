@@ -101,9 +101,10 @@ public class TransactionsDatabaseService {
         session.close();
     }
 
-    public List<DBTransaction> getAllTransactionsByDate(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<DBTransaction> getAllTransactionsByDateForId(String id, LocalDateTime startDate, LocalDateTime endDate) {
         Session session = sessionFactory.openSession();
-        Query<DBTransaction> query = session.createQuery("from DBTransaction t where t.createdAt>= :start and t.createdAt< :end", DBTransaction.class);
+        Query<DBTransaction> query = session.createQuery("from DBTransaction t where (t.destinationAccountId.id =:accountId or t.sourceAccountId.id =:accountId) and t.createdAt>= :start and t.createdAt< :end", DBTransaction.class);
+        query.setParameter("accountId",id);
         query.setParameter("start", startDate);
         query.setParameter("end", endDate);
         List<DBTransaction> dbTransactions = query.getResultList();
