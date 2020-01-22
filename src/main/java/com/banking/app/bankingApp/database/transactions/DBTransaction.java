@@ -1,9 +1,9 @@
 package com.banking.app.bankingApp.database.transactions;
 
 import com.banking.app.bankingApp.database.accounts.DBAccount;
-import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "DBTRANSACTION")
@@ -12,7 +12,7 @@ public class DBTransaction {
     private String id;
     private Double amount;
     private String purpose;
-    private org.joda.time.LocalDateTime createdAt;
+    private java.time.LocalDateTime createdAt;
     @ManyToOne
     @JoinColumn(name = "sourceAccountId", nullable = false)
     private DBAccount sourceAccountId;

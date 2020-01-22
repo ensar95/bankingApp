@@ -4,7 +4,6 @@ import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseService;
 import com.banking.app.bankingApp.response.analitics.Analitics;
 import com.banking.app.bankingApp.service.balance.BalanceManagementService;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -16,44 +15,59 @@ public class AnaliticsManagementService {
     private static final AnaliticsManagementService analiticsManagementService = new AnaliticsManagementService();
     private BalanceManagementService balanceManagementService;
     private TransactionsDatabaseService transactionsDatabaseService;
-    public AnaliticsManagementService() {
-        transactionsDatabaseService=TransactionsDatabaseService.getInstance();
-        balanceManagementService=BalanceManagementService.getInstance();
+
+    private AnaliticsManagementService() {
+        transactionsDatabaseService = TransactionsDatabaseService.getInstance();
+        balanceManagementService = BalanceManagementService.getInstance();
     }
 
     public static AnaliticsManagementService getInstance() {
         return analiticsManagementService;
     }
 
-    public List<Analitics> getAnalitics(String accountId, String startDate, String endDate ) {
-        DateTimeFormatter formatter= DateTimeFormat.forPattern("yyyy-MM");
-        LocalDateTime startingDate = new LocalDateTime(formatter.parseDateTime(startDate));
-        LocalDateTime endingDate = new LocalDateTime(formatter.parseDateTime(endDate));
-        validateAnalitics(startingDate,endingDate);
+    public List<Analitics> getAnalitics(String accountId, String startDate, String endDate) {
+        DateTimeFormatter formatterJodaLocalDateTime = DateTimeFormat.forPattern("yyyy-MM");
+        LocalDateTime startingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(startDate));
+        LocalDateTime endingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(endDate));
+        validateAnalitics(startingDate, endingDate);
         LocalDateTime currentDate = startingDate;
         LocalDateTime nextDate = currentDate.plusMonths(1);
         List<Analitics> analiticsList = new ArrayList<>();
-        while (startingDate.isBefore(endingDate)) {
+        while (currentDate.isBefore(endingDate)) {
+            String currentDateString = currentDate.toString("yyyy-MM");
+            java.time.format.DateTimeFormatter formatterJavaLocalDateTime = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM");
+            java.time.LocalDateTime currentDateJavaType = java.time.LocalDateTime.of(currentDate.getYear(), currentDate.getMonthOfYear(), currentDate.getDayOfMonth(), 00, 00);
+
+            String nextDateString = nextDate.toString("yyyy-MM");
+            java.time.LocalDateTime nextDateJavaType = java.time.LocalDateTime.of(nextDate.getYear(), nextDate.getMonthOfYear(), nextDate.getDayOfMonth(), 00, 00);
+
             Analitics analitics = new Analitics();
-            List<DBTransaction> dbTransactions = transactionsDatabaseService.getAllTransactionsByDate(currentDate, nextDate);
-            analitics.setDate(currentDate);
+            List<DBTransaction> dbTransactions = transactionsDatabaseService.getAllTransactionsByDate(currentDateJavaType, nextDateJavaType);
+
+            analitics.setDate(currentDateJavaType);
+            Double expenses = 0.0;
+            for (int i = 0; i < dbTransactions.size(); i++) {
+                if (dbTransactions.get(i).getSourceAccountId().getId().equals(accountId)) {
+                    expenses = expenses + dbTransactions.get(i).getAmount();
+                }
+            }
             Double income = 0.0;
             for (int i = 0; i < dbTransactions.size(); i++) {
-                if (dbTransactions.get(i).getSourceAccountId().equals(accountId)) {
+                if (dbTransactions.get(i).getDestinationAccountId().getId().equals(accountId)) {
                     income = income + dbTransactions.get(i).getAmount();
                 }
             }
+            analitics.setExpenses(expenses);
             analitics.setIncome(income);
-            Double expense = 0.0;
-            for (int i = 0; i < dbTransactions.size(); i++) {
-                if (dbTransactions.get(i).getDestinationAccountId().equals(accountId)) {
-                    expense = expense + dbTransactions.get(i).getAmount();
-                }
-            }
-            analitics.setExpenses(expense);
+
             analiticsList.add(analitics);
-            currentDate.plusMonths(1);
-            nextDate.plusMonths(1);
+            currentDate = currentDate.plusMonths(1);
+            nextDate = nextDate.plusMonths(1);
+            currentDateString = currentDate.toString("yyyy-MM");
+            currentDateJavaType = java.time.LocalDateTime.of(currentDate.getYear(), currentDate.getMonthOfYear(), currentDate.getDayOfWeek(), currentDate.getHourOfDay(), currentDate.getMinuteOfHour());
+            nextDateString = nextDate.toString("yyyy-MM");
+            nextDateJavaType = java.time.LocalDateTime.of(nextDate.getYear(), nextDate.getMonthOfYear(), nextDate.getDayOfWeek(), nextDate.getHourOfDay(), nextDate.getMinuteOfHour());
+
         }
         return analiticsList;
     }

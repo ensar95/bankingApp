@@ -14,7 +14,7 @@ public class BalanceManagementService {
     private AccountsDatabaseService accountsDatabaseService;
     private TransactionsDatabaseService transactionsDatabaseService;
 
-    public BalanceManagementService() {
+    private BalanceManagementService() {
         transactionsDatabaseService = TransactionsDatabaseService.getInstance();
         accountsDatabaseService = AccountsDatabaseService.getInstance();
         accountManagementService = AccountManagementService.getInstance();
@@ -24,7 +24,7 @@ public class BalanceManagementService {
         return balanceManagementService;
     }
 
-    public Double getIncome(String id) {
+    private Double getIncome(String id) {
         DBAccount dbAccount = accountsDatabaseService.findAccountById(id);
         List<DBTransaction> dbTransactions = transactionsDatabaseService.getAllDBTransactionsWhereDestination(id);
         Double income = 0.0;
@@ -34,7 +34,7 @@ public class BalanceManagementService {
         return income;
     }
 
-    public Double getExpenses(String id) {
+    private Double getExpenses(String id) {
         DBAccount dbAccount = accountsDatabaseService.findAccountById(id);
         List<DBTransaction> dbTransactions = transactionsDatabaseService.getAllDBTransactionsWhereSource(id);
         Double expense = 0.0;

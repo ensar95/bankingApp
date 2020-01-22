@@ -1,11 +1,11 @@
 package com.banking.app.bankingApp.database.users;
 
 import com.banking.app.bankingApp.database.accounts.DBAccount;
-import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 @Entity
@@ -26,7 +26,7 @@ public class DBUser {
     private String currentAdress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
-    private org.joda.time.LocalDateTime createdAt;
+    private java.time.LocalDateTime createdAt;
     @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DBAccount> dbAccount;
 

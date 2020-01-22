@@ -1,6 +1,6 @@
 package com.banking.app.bankingApp.response.transactions;
 
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 public class Transaction {
     private String id;
@@ -8,7 +8,7 @@ public class Transaction {
     private String purpose;
     private String sourceId;
     private String destinationId;
-    private org.joda.time.LocalDateTime createdAt;
+    private java.time.LocalDateTime createdAt;
 
     public Transaction() {
     }

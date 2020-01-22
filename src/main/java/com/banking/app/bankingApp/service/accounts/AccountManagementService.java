@@ -18,7 +18,7 @@ public class AccountManagementService {
     private BalanceManagementService balanceManagementService;
     private UserManagementService userManagementService;
 
-    public AccountManagementService() {
+    private AccountManagementService() {
         accountsDatabaseService = AccountsDatabaseService.getInstance();
         balanceManagementService = BalanceManagementService.getInstance();
         userManagementService = UserManagementService.getInstance();

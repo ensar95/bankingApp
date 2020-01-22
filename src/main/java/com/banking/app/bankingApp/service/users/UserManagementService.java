@@ -14,7 +14,7 @@ public class UserManagementService {
     private static final UserManagementService userManagementService = new UserManagementService();
     private UsersDatabaseService usersDatabaseService;
 
-    public UserManagementService() {
+    private UserManagementService() {
         usersDatabaseService = UsersDatabaseService.getInstance();
     }
 

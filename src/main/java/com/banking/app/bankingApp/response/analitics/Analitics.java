@@ -1,10 +1,9 @@
 package com.banking.app.bankingApp.response.analitics;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 public class Analitics {
-    private LocalDateTime date;
+    private java.time.LocalDateTime date;
     private Double income;
     private Double expenses;
 

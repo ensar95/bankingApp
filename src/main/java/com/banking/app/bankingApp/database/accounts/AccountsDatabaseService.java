@@ -8,9 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.joda.time.LocalDateTime;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +18,8 @@ public class AccountsDatabaseService {
     private static final AccountsDatabaseService accountsDatabaseService = new AccountsDatabaseService();
     private UsersDatabaseService usersDatabaseService;
     private SessionFactory sessionFactory;
-    public AccountsDatabaseService() {
+
+    private AccountsDatabaseService() {
         usersDatabaseService = UsersDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
@@ -37,7 +38,7 @@ public class AccountsDatabaseService {
         dbAccount.setId(accountId);
         dbAccount.setDbUser(usersDatabaseService.findUserById(createAccount.getUserId()));
         dbAccount.setExpirationDate(createAccount.getExpirationDate());
-        LocalDateTime now=LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         dbAccount.setCreatedAt(now);
         dbAccount.setAccountName(createAccount.getAccountName());
 
