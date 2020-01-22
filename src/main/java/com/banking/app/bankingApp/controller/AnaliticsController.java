@@ -25,7 +25,12 @@ public class AnaliticsController {
             @PathVariable("accountId") String accountId,
             @RequestParam(name = "startDate", required = true) String startDate,
             @RequestParam(name = "endDate", required = true) String endDate) {
-        return ResponseEntity.status(HttpStatus.OK).body(analiticsManagementService.getAnalitics(accountId, startDate, endDate));
-
+      try {
+          return ResponseEntity.status(HttpStatus.OK).body(analiticsManagementService.getAnalitics(accountId, startDate, endDate));
+      }catch (IllegalStateException e){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      }catch(RuntimeException e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
     }
 }
