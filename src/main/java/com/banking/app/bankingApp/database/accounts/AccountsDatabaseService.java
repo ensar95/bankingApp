@@ -18,7 +18,8 @@ public class AccountsDatabaseService {
     private static final AccountsDatabaseService accountsDatabaseService = new AccountsDatabaseService();
     private UsersDatabaseService usersDatabaseService;
     private SessionFactory sessionFactory;
-    public AccountsDatabaseService() {
+
+    private AccountsDatabaseService() {
         usersDatabaseService = UsersDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();

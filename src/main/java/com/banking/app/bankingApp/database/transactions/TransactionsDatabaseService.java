@@ -16,16 +16,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class TransactionsDatabaseService {
-    private static final TransactionsDatabaseService transactionDatabaseService=new TransactionsDatabaseService();
+    private static final TransactionsDatabaseService transactionDatabaseService = new TransactionsDatabaseService();
     private AccountsDatabaseService accountsDatabaseService;
     private SessionFactory sessionFactory;
 
-    public TransactionsDatabaseService() {
+    private TransactionsDatabaseService() {
         accountsDatabaseService = AccountsDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
     }
-    public static TransactionsDatabaseService getInstance(){
+
+    public static TransactionsDatabaseService getInstance() {
         return transactionDatabaseService;
     }
 
@@ -42,7 +43,7 @@ public class TransactionsDatabaseService {
         dbTransaction.setSourceAccountId(sourceAccount);
         DBAccount destinationAccount = accountsDatabaseService.findAccountById(createTransaction.getDestinationId());
         dbTransaction.setDestinationAccountId(destinationAccount);
-        LocalDateTime now = LocalDateTime.now();
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
         dbTransaction.setCreatedAt(now);
         session.save(dbTransaction);
         transaction.commit();
@@ -62,15 +63,16 @@ public class TransactionsDatabaseService {
     public List<DBTransaction> getAllDBTransactionsWhereSource(String id) {
         Session session = sessionFactory.openSession();
         Query<DBTransaction> query = session.createQuery("from DBTransaction t where t.sourceAccountId.id=:id", DBTransaction.class);
-        query.setParameter("id",id);
+        query.setParameter("id", id);
         List<DBTransaction> dbTransactions = query.getResultList();
         session.close();
         return dbTransactions;
     }
-    public List<DBTransaction> getAllDBTransactionsWhereDestination(String id){
+
+    public List<DBTransaction> getAllDBTransactionsWhereDestination(String id) {
         Session session = sessionFactory.openSession();
         Query<DBTransaction> query = session.createQuery("from DBTransaction t where t.destinationAccountId.id=:id", DBTransaction.class);
-        query.setParameter("id",id);
+        query.setParameter("id", id);
         List<DBTransaction> dbTransactions = query.getResultList();
         session.close();
         return dbTransactions;
@@ -89,12 +91,24 @@ public class TransactionsDatabaseService {
         transaction.commit();
         session.close();
     }
-    public void deleteDBTransaction(String id){
-        Session session=sessionFactory.openSession();
-        Transaction transaction=session.beginTransaction();
-        DBTransaction dbTransaction=getDBTransactionById(id);
+
+    public void deleteDBTransaction(String id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        DBTransaction dbTransaction = getDBTransactionById(id);
         session.delete(dbTransaction);
         transaction.commit();
         session.close();
+    }
+
+    public List<DBTransaction> getAllTransactionsByDateForId(String id, LocalDateTime startDate, LocalDateTime endDate) {
+        Session session = sessionFactory.openSession();
+        Query<DBTransaction> query = session.createQuery("from DBTransaction t where (t.destinationAccountId.id =:accountId or t.sourceAccountId.id =:accountId) and t.createdAt>= :start and t.createdAt< :end", DBTransaction.class);
+        query.setParameter("accountId",id);
+        query.setParameter("start", startDate);
+        query.setParameter("end", endDate);
+        List<DBTransaction> dbTransactions = query.getResultList();
+        session.close();
+        return dbTransactions;
     }
 }

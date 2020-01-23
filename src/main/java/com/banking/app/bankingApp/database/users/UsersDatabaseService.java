@@ -16,16 +16,15 @@ import java.util.UUID;
 /* UsersDatabaseService is singleton service */
 
 public class UsersDatabaseService {
-    private SessionFactory sessionFactory;
-
     private static final UsersDatabaseService userDatabaseService = new UsersDatabaseService();
+    private SessionFactory sessionFactory;
 
     private UsersDatabaseService() {
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
     }
 
-    public static UsersDatabaseService getInstance(){
+    public static UsersDatabaseService getInstance() {
         return userDatabaseService;
     }
 

@@ -18,7 +18,7 @@ public class TransactionManagementService {
     private BalanceManagementService balanceManagementService;
     private AccountManagementService accountManagementService;
 
-    public TransactionManagementService() {
+    private TransactionManagementService() {
         accountManagementService = AccountManagementService.getInstance();
         transactionsDatabaseService = TransactionsDatabaseService.getInstance();
         balanceManagementService = BalanceManagementService.getInstance();
@@ -89,7 +89,7 @@ public class TransactionManagementService {
     }
 
     public void updateTransaction(String id, UpdateTransaction updateTransaction) {
-        verifyTransaction(updateTransaction.getSourceId(),updateTransaction.getAmount());
+        verifyTransaction(updateTransaction.getSourceId(), updateTransaction.getAmount());
         transactionsDatabaseService.updateDBTransaction(updateTransaction, id);
     }
 
