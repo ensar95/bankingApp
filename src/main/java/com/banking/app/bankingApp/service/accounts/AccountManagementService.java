@@ -9,6 +9,7 @@ import com.banking.app.bankingApp.response.users.User;
 import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 import com.banking.app.bankingApp.service.users.UserManagementService;
 
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 

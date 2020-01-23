@@ -89,7 +89,7 @@ public class TransactionManagementService {
     }
 
     public void updateTransaction(String id, UpdateTransaction updateTransaction) {
-        verifyTransaction(updateTransaction.getSourceId(),updateTransaction.getAmount());
+        verifyTransaction(updateTransaction.getSourceId(), updateTransaction.getAmount());
         transactionsDatabaseService.updateDBTransaction(updateTransaction, id);
     }
 

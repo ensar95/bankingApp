@@ -84,9 +84,6 @@ public class AnalyticsManagementService {
     }
 
     private void validateAnaliticsAccountId(String id) {
-        if ((id).equals(accountManagementService.getAccountById(id).getId())) {
-        } else {
-            throw new NoResultException();
-        }
+        accountManagementService.getAccountById(id);
     }
 }
