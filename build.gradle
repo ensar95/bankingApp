@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.2.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
 }
 
 group = 'com.banking.app'
@@ -9,25 +9,23 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.9.Final'
-	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
-	compile group: 'joda-time', name: 'joda-time', version: '2.10.5'
-		compile 'io.jsonwebtoken:jjwt-api:0.10.7'
-		runtime 'io.jsonwebtoken:jjwt-impl:0.10.7',
-				// Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
-				//'org.bouncycastle:bcprov-jdk15on:1.60',
-				'io.jsonwebtoken:jjwt-jackson:0.10.7'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.9.Final'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.9'
+    compile group: 'joda-time', name: 'joda-time', version: '2.10.5'
+    compile 'io.jsonwebtoken:jjwt-api:0.10.7'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.10.7',
+            'io.jsonwebtoken:jjwt-jackson:0.10.7'
 
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

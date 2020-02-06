@@ -1,6 +1,5 @@
 package com.banking.app.bankingApp.config;
 
-import com.banking.app.bankingApp.service.users.UserManagementService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.core.annotation.Order;
@@ -15,11 +14,9 @@ import java.io.IOException;
 @Order(1)
 public class SecurityFilter implements Filter {
     TokenUtil tokenUtil;
-    UserManagementService userManagementService;
 
     public SecurityFilter() {
         tokenUtil = TokenUtil.getInstance();
-        userManagementService = UserManagementService.getInstance();
     }
 
     @Override
@@ -35,7 +32,7 @@ public class SecurityFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             try {
-                if (authHeader != null & tokenUtil.validateToken(authHeader) & tokenUtil.validateTokenId(authHeader)) {
+                if (authHeader != null && tokenUtil.validateToken(authHeader)) {
                     chain.doFilter(request, response);
 
                 } else {
