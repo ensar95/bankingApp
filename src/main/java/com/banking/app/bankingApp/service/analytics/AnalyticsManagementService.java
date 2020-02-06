@@ -31,8 +31,8 @@ public class AnalyticsManagementService {
         return analiticsManagementService;
     }
 
-    public List<Analytics> getAnalytics(String accountId, String startDate, String endDate, String token) {
-        validateAnalyticsAccountId(accountId,token);
+    public List<Analytics> getAnalytics(String accountId, String startDate, String endDate, String userId) {
+        validateAnalyticsAccountId(accountId,userId);
         DateTimeFormatter formatterJodaLocalDateTime = DateTimeFormat.forPattern("yyyy-MM");
         LocalDateTime startingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(startDate));
         LocalDateTime endingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(endDate));
@@ -85,7 +85,7 @@ public class AnalyticsManagementService {
         }
     }
 
-    private void validateAnalyticsAccountId(String id, String token) {
-        accountManagementService.getAccountById(id,token);
+    private void validateAnalyticsAccountId(String id, String userId) {
+        accountManagementService.getAccountById(id,userId);
     }
 }

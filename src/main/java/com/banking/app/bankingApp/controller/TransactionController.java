@@ -27,12 +27,12 @@ public class TransactionController {
                                                       @RequestHeader(name = "Authorization") String authorization) {
         try {
             String userId=tokenUtil.getIdFromToken(authorization);
-            Transaction transaction = transactionManagementService.addTransaction(createTransaction, authorization);
+            Transaction transaction = transactionManagementService.addTransaction(createTransaction, userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -41,7 +41,7 @@ public class TransactionController {
                                                                       @RequestHeader(name = "Authorization") String authorization) {
         try {
             String userId=tokenUtil.getIdFromToken(authorization);
-            Transaction transaction = transactionManagementService.getTransactionById(id);
+            Transaction transaction = transactionManagementService.getTransactionById(id,userId);
             return ResponseEntity.status(HttpStatus.OK).body(transaction);
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -55,7 +55,7 @@ public class TransactionController {
                                                                         @RequestHeader(name = "Authorization") String authorization) {
         try {
             String id=tokenUtil.getIdFromToken(authorization);
-            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(accountId));
+            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(accountId,id));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (RuntimeException e) {
@@ -69,7 +69,7 @@ public class TransactionController {
                                             @RequestHeader(name = "Authorization") String authorization) {
         try {
             String userId=tokenUtil.getIdFromToken(authorization);
-            transactionManagementService.updateTransaction(id, updateTransaction, authorization);
+            transactionManagementService.updateTransaction(id, updateTransaction, userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -85,7 +85,7 @@ public class TransactionController {
                                             @RequestHeader(name = "Authorization") String authorization) {
         try {
             String userId=tokenUtil.getIdFromToken(authorization);
-            transactionManagementService.deleteTransaction(id);
+            transactionManagementService.deleteTransaction(id,userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

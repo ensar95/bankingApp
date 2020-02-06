@@ -1,5 +1,6 @@
 package com.banking.app.bankingApp.controller;
 
+import com.banking.app.bankingApp.config.TokenUtil;
 import com.banking.app.bankingApp.response.analytics.Analytics;
 import com.banking.app.bankingApp.service.analytics.AnalyticsManagementService;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,9 @@ import java.util.List;
 public class AnalyticsController {
 
     private AnalyticsManagementService analyticsManagementService;
-
+    private TokenUtil tokenUtil;
     public AnalyticsController() {
+        tokenUtil=TokenUtil.getInstance();
         analyticsManagementService = AnalyticsManagementService.getInstance();
     }
 
@@ -25,7 +27,8 @@ public class AnalyticsController {
             @RequestParam(name = "endDate", required = true) String endDate,
             @RequestHeader(name = "Authorization") String authorization) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(analyticsManagementService.getAnalytics(accountId, startDate, endDate, authorization));
+            String userId=tokenUtil.getIdFromToken(authorization);
+            return ResponseEntity.status(HttpStatus.OK).body(analyticsManagementService.getAnalytics(accountId, startDate, endDate, userId));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (IllegalStateException e) {
