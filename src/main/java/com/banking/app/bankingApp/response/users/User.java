@@ -13,9 +13,27 @@ public class User {
     private String occupation;
     private String currentAdress;
     private String phoneNumber;
+    private String emailVerificationToken;
+    private Boolean emailVerificationStatus = false;
     private LocalDateTime createdAt;
 
     public User() {
+    }
+
+    public String getEmailVerificationToken() {
+        return emailVerificationToken;
+    }
+
+    public void setEmailVerificationToken(String emailVerificationToken) {
+        this.emailVerificationToken = emailVerificationToken;
+    }
+
+    public Boolean getEmailVerificationStatus() {
+        return emailVerificationStatus;
+    }
+
+    public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
+        this.emailVerificationStatus = emailVerificationStatus;
     }
 
     public LocalDateTime getCreatedAt() {

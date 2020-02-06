@@ -8,15 +8,16 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+
 @Entity
-@Table(name="DBUSER")
+@Table(name = "DBUSER")
 public class DBUser {
     @Id
     private String id;
     private String firstName;
     @NotEmpty(message = "  ")
     private String lastName;
-    @NotEmpty(message = "Email has to be entered")
+    @Column(nullable = false,unique = true)
     private String email;
     @NotNull(message = "Date of birth has to entered")
     private Date dateOfBirth;
@@ -26,11 +27,20 @@ public class DBUser {
     private String currentAdress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
+    private String encryptedPassword;
     private LocalDateTime createdAt;
-    @OneToMany(mappedBy ="dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DBAccount> dbAccount;
 
     public DBUser() {
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public List<DBAccount> getDbAccount() {

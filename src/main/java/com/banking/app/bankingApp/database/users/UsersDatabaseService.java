@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 public class UsersDatabaseService {
     private static final UsersDatabaseService userDatabaseService = new UsersDatabaseService();
+
     private SessionFactory sessionFactory;
 
     private UsersDatabaseService() {
@@ -44,6 +46,8 @@ public class UsersDatabaseService {
         dbUser.setPhoneNumber(createUser.getPhoneNumber());
         LocalDateTime now = LocalDateTime.now();
         dbUser.setCreatedAt(now);
+        String encryptedPassword= Base64.getEncoder().encodeToString(createUser.getPassword().getBytes());
+        dbUser.setEncryptedPassword(encryptedPassword);
 
         session.save(dbUser);
         transaction.commit();
@@ -57,6 +61,16 @@ public class UsersDatabaseService {
         List<DBUser> allUsers = query.getResultList();
         session.close();
         return allUsers;
+    }
+
+    public DBUser findUserByEmailAndEncryptedPassword(String email, String password) {
+        Session session = sessionFactory.openSession();
+        Query<DBUser> query = session.createQuery("select u from DBUser u where u.email=:userEmail and u.encryptedPassword=:password", DBUser.class);
+        query.setParameter("userEmail", email);
+        query.setParameter("password",password);
+        DBUser foundUser = query.getSingleResult();
+        session.close();
+        return foundUser;
     }
 
     public DBUser findUserById(String id) {

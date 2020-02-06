@@ -57,10 +57,11 @@ public class AccountsDatabaseService {
         return foundAcc;
     }
 
-    public List<DBAccount> getAllAccounts() {
+    public List<DBAccount> getAllAccounts(String userId) {
         Session session = sessionFactory.openSession();
 
-        Query<DBAccount> query = session.createQuery("from DBAccount", DBAccount.class);
+        Query<DBAccount> query = session.createQuery("from DBAccount a where userId=:UserId", DBAccount.class);
+        query.setParameter("UserId", userId);
         List<DBAccount> allAccounts = query.getResultList();
 
         session.close();

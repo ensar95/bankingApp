@@ -1,5 +1,6 @@
 package com.banking.app.bankingApp.controller;
 
+import com.banking.app.bankingApp.config.TokenUtil;
 import com.banking.app.bankingApp.request.transactions.CreateTransaction;
 import com.banking.app.bankingApp.request.transactions.UpdateTransaction;
 import com.banking.app.bankingApp.response.transactions.Transaction;
@@ -14,17 +15,21 @@ import java.util.List;
 @RestController
 public class TransactionController {
     private TransactionManagementService transactionManagementService;
+    private TokenUtil tokenUtil;
 
     public TransactionController() {
         transactionManagementService = TransactionManagementService.getInstance();
+        tokenUtil = TokenUtil.getInstance();
     }
 
     @PostMapping(value = "/transactions")
-    public ResponseEntity<Transaction> addTransaction(@RequestBody CreateTransaction createTransaction) {
+    public ResponseEntity<Transaction> addTransaction(@RequestBody CreateTransaction createTransaction,
+                                                      @RequestHeader(name = "Authorization") String authorization) {
         try {
-            Transaction transaction = transactionManagementService.addTransaction(createTransaction);
+            String userId=tokenUtil.getIdFromToken(authorization);
+            Transaction transaction = transactionManagementService.addTransaction(createTransaction, authorization);
             return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
-        }catch(IllegalStateException e){
+        } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -32,8 +37,10 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/transactions/{id}")
-    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("id") String id) {
+    public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("id") String id,
+                                                                      @RequestHeader(name = "Authorization") String authorization) {
         try {
+            String userId=tokenUtil.getIdFromToken(authorization);
             Transaction transaction = transactionManagementService.getTransactionById(id);
             return ResponseEntity.status(HttpStatus.OK).body(transaction);
         } catch (NoResultException e) {
@@ -44,8 +51,10 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/transactions/{accountId}/details")
-    public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("accountId") String accountId) {
+    public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("accountId") String accountId,
+                                                                        @RequestHeader(name = "Authorization") String authorization) {
         try {
+            String id=tokenUtil.getIdFromToken(authorization);
             return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(accountId));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -55,10 +64,12 @@ public class TransactionController {
     }
 
     @PutMapping(value = "/transactions/{id}")
-    public ResponseEntity updateTransaction(@RequestBody UpdateTransaction
-                                                    updateTransaction, @PathVariable("id") String id) {
+    public ResponseEntity updateTransaction(@RequestBody UpdateTransaction updateTransaction,
+                                            @PathVariable("id") String id,
+                                            @RequestHeader(name = "Authorization") String authorization) {
         try {
-            transactionManagementService.updateTransaction(id, updateTransaction);
+            String userId=tokenUtil.getIdFromToken(authorization);
+            transactionManagementService.updateTransaction(id, updateTransaction, authorization);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -70,8 +81,10 @@ public class TransactionController {
     }
 
     @DeleteMapping(value = "/transactions/{id}")
-    public ResponseEntity deleteTransaction(@PathVariable("id") String id) {
+    public ResponseEntity deleteTransaction(@PathVariable("id") String id,
+                                            @RequestHeader(name = "Authorization") String authorization) {
         try {
+            String userId=tokenUtil.getIdFromToken(authorization);
             transactionManagementService.deleteTransaction(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NoResultException e) {
