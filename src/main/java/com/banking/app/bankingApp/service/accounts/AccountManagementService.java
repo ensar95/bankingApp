@@ -34,7 +34,7 @@ public class AccountManagementService {
     public Account addAccount(CreateAccount createAccount, String userId) {
         User user = userManagementService.getUserById(createAccount.getUserId());
         Account account = new Account();
-        DBAccount dbAccount = accountsDatabaseService.createAccount(createAccount);
+        DBAccount dbAccount = accountsDatabaseService.createAccount(createAccount, userId);
         account.setId(dbAccount.getId());
         account.setUserId(dbAccount.getDbUser().getId());
         account.setOwner(dbAccount.getOwner());

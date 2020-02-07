@@ -29,14 +29,14 @@ public class AccountsDatabaseService {
         return accountsDatabaseService;
     }
 
-    public DBAccount createAccount(CreateAccount createAccount) {
+    public DBAccount createAccount(CreateAccount createAccount, String userId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         DBAccount dbAccount = new DBAccount();
         String accountId = UUID.randomUUID().toString();
         dbAccount.setId(accountId);
-        dbAccount.setDbUser(usersDatabaseService.findUserById(createAccount.getUserId()));
+        dbAccount.setDbUser(usersDatabaseService.findUserById(userId));
         dbAccount.setExpirationDate(createAccount.getExpirationDate());
         LocalDateTime now = LocalDateTime.now();
         dbAccount.setCreatedAt(now);

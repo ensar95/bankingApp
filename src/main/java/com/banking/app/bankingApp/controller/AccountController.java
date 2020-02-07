@@ -5,8 +5,6 @@ import com.banking.app.bankingApp.request.accounts.CreateAccount;
 import com.banking.app.bankingApp.request.accounts.UpdateAccount;
 import com.banking.app.bankingApp.response.accounts.Account;
 import com.banking.app.bankingApp.service.accounts.AccountManagementService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +54,8 @@ public class AccountController {
     }
 
     @GetMapping(value = "/accounts/{id}")
-    public ResponseEntity<Account> getAccById(@PathVariable("id") String id,
-                                              @RequestHeader(name = "Authorization") String authorization
+    public ResponseEntity<Account> getAccountById(@PathVariable("id") String id,
+                                                  @RequestHeader(name = "Authorization") String authorization
     ) {
         try {
             String userId = tokenUtil.getIdFromToken(authorization);

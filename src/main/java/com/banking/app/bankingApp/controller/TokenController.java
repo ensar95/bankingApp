@@ -25,7 +25,7 @@ public class TokenController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(tokenUtil.getToken(userLogin));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }

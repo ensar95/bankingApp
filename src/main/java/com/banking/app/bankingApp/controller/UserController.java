@@ -22,8 +22,7 @@ public class UserController {
 
     @PostMapping(value = "/users")
 
-    public ResponseEntity<User> addUser(@RequestBody CreateUser createUser,
-                                        @RequestHeader(name = "Authorization") String authorization) {
+    public ResponseEntity<User> addUser(@RequestBody CreateUser createUser) {
 
         try {
 
