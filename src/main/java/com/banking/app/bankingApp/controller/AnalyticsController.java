@@ -31,10 +31,12 @@ public class AnalyticsController {
             return ResponseEntity.status(HttpStatus.OK).body(analyticsManagementService.getAnalytics(accountId, startDate, endDate, userId));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (IllegalStateException e) {
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }
