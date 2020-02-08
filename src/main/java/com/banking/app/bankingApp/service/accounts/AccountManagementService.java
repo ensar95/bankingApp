@@ -32,11 +32,11 @@ public class AccountManagementService {
     }
 
     public Account addAccount(CreateAccount createAccount, String userId) {
-        User user = userManagementService.getUserById(createAccount.getUserId());
+        User user = userManagementService.getUserById(userId);
         Account account = new Account();
         DBAccount dbAccount = accountsDatabaseService.createAccount(createAccount, userId);
         account.setId(dbAccount.getId());
-        account.setUserId(dbAccount.getDbUser().getId());
+        account.setUserId(userId);
         account.setOwner(dbAccount.getOwner());
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
@@ -59,7 +59,7 @@ public class AccountManagementService {
         Account account = new Account();
         DBAccount dbAccount = accountsDatabaseService.findAccountById(id);
         account.setId(dbAccount.getId());
-        account.setUserId(dbAccount.getDbUser().getId());
+        account.setUserId(userId);
         account.setOwner(dbAccount.getOwner());
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
