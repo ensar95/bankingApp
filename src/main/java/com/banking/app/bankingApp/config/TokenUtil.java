@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class TokenUtil {
     private static final TokenUtil tokenUtil = new TokenUtil();
-    UserManagementService userManagementService;
+    private UserManagementService userManagementService;
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     private TokenUtil() {
