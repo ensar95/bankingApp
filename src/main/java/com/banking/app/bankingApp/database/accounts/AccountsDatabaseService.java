@@ -29,14 +29,14 @@ public class AccountsDatabaseService {
         return accountsDatabaseService;
     }
 
-    public DBAccount createAccount(CreateAccount createAccount) {
+    public DBAccount createAccount(CreateAccount createAccount, String userId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         DBAccount dbAccount = new DBAccount();
         String accountId = UUID.randomUUID().toString();
         dbAccount.setId(accountId);
-        dbAccount.setDbUser(usersDatabaseService.findUserById(createAccount.getUserId()));
+        dbAccount.setDbUser(usersDatabaseService.findUserById(userId));
         dbAccount.setExpirationDate(createAccount.getExpirationDate());
         LocalDateTime now = LocalDateTime.now();
         dbAccount.setCreatedAt(now);
@@ -57,24 +57,25 @@ public class AccountsDatabaseService {
         return foundAcc;
     }
 
-    public List<DBAccount> getAllAccounts() {
+    public List<DBAccount> getAllAccounts(String userId) {
         Session session = sessionFactory.openSession();
 
-        Query<DBAccount> query = session.createQuery("from DBAccount", DBAccount.class);
+        Query<DBAccount> query = session.createQuery("from DBAccount a where userId=:userId", DBAccount.class);
+        query.setParameter("userId", userId);
         List<DBAccount> allAccounts = query.getResultList();
 
         session.close();
         return allAccounts;
     }
 
-    public void updateAccount(String id, UpdateAccount updateAccount) {
+    public void updateAccount(String id, UpdateAccount updateAccount, String userId) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         DBAccount dbAccount = findAccountById(id);
         dbAccount.setAccountName(updateAccount.getAccountName());
         dbAccount.setExpirationDate(updateAccount.getExpirationDate());
-        dbAccount.setDbUser(usersDatabaseService.findUserById(updateAccount.getUserId()));
+        dbAccount.setDbUser(usersDatabaseService.findUserById(userId));
 
         session.update(dbAccount);
         transaction.commit();

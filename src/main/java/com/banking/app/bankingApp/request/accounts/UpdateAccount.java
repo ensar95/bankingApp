@@ -5,7 +5,6 @@ import java.util.Date;
 public class UpdateAccount {
     private String accountName;
     private Date expirationDate;
-    private String userId;
 
     public UpdateAccount() {
     }
@@ -26,11 +25,4 @@ public class UpdateAccount {
         this.expirationDate = expirationDate;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

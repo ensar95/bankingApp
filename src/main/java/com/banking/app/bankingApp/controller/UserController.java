@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -16,8 +15,9 @@ import java.util.List;
 public class UserController {
     private UserManagementService userManagementService;
 
+
     public UserController() {
-        userManagementService =  UserManagementService.getInstance();
+        userManagementService = UserManagementService.getInstance();
     }
 
     @PostMapping(value = "/users")
@@ -28,8 +28,10 @@ public class UserController {
 
             User createdUser = userManagementService.addUser(createUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } catch (ConstraintViolationException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
@@ -38,8 +40,11 @@ public class UserController {
 
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
         try {
+
             User foundUser = userManagementService.getUserById(id);
             return ResponseEntity.status(HttpStatus.OK).body(foundUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -52,11 +57,14 @@ public class UserController {
     }
 
     @PutMapping(value = "/users/{id}")
-    public ResponseEntity updateUser(@RequestBody UpdateUser updateUser, @PathVariable("id") String id) {
+    public ResponseEntity updateUser(@RequestBody UpdateUser updateUser,
+                                     @PathVariable("id") String id) {
         try {
             userManagementService.getUserById(id);
             userManagementService.updateUser(id, updateUser);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -67,6 +75,8 @@ public class UserController {
         try {
             userManagementService.deleteUser(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

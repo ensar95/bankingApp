@@ -11,8 +11,17 @@ public class CreateUser {
     private String occupation;
     private String currentAdress;
     private String phoneNumber;
+    private String password;
 
     public CreateUser() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {

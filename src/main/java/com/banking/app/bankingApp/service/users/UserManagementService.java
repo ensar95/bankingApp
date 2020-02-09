@@ -4,9 +4,11 @@ import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
+import com.banking.app.bankingApp.request.users.UserLogin;
 import com.banking.app.bankingApp.response.users.User;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -22,6 +24,7 @@ public class UserManagementService {
         return userManagementService;
     }
 
+
     public User addUser(CreateUser createUser) {
         DBUser dbUser = usersDatabaseService.createDbUser(createUser);
         User user = new User();
@@ -36,7 +39,10 @@ public class UserManagementService {
         user.setCreatedAt(dbUser.getCreatedAt());
         return user;
     }
-
+    public String encryptPassword(CreateUser createUser){
+        String encryptedPassword= Base64.getEncoder().encodeToString(createUser.getPassword().getBytes());
+        return encryptedPassword;
+    }
     public User getUserById(String id) {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         User user = new User();
@@ -78,5 +84,22 @@ public class UserManagementService {
     public void deleteUser(String id) {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         usersDatabaseService.deleteUser(id);
+    }
+
+
+    public User getUserByEmailAndPassword(String email, String password) {
+        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+        DBUser dbUser = usersDatabaseService.findUserByEmailAndEncryptedPassword(email, encodedPassword);
+        User user = new User();
+        user.setId(dbUser.getId());
+        user.setFirstName(dbUser.getFirstName());
+        user.setLastName(dbUser.getLastName());
+        user.setEmail(dbUser.getEmail());
+        user.setDateOfBirth(dbUser.getDateOfBirth());
+        user.setOccupation(dbUser.getOccupation());
+        user.setCurrentAdress(dbUser.getCurrentAdress());
+        user.setPhoneNumber(dbUser.getPhoneNumber());
+        user.setCreatedAt(dbUser.getCreatedAt());
+        return user;
     }
 }

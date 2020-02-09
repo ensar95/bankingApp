@@ -1,5 +1,6 @@
 package com.banking.app.bankingApp.service.accounts;
 
+import com.banking.app.bankingApp.config.TokenUtil;
 import com.banking.app.bankingApp.database.accounts.AccountsDatabaseService;
 import com.banking.app.bankingApp.database.accounts.DBAccount;
 import com.banking.app.bankingApp.request.accounts.CreateAccount;
@@ -9,7 +10,6 @@ import com.banking.app.bankingApp.response.users.User;
 import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 import com.banking.app.bankingApp.service.users.UserManagementService;
 
-import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,52 +18,64 @@ public class AccountManagementService {
     private AccountsDatabaseService accountsDatabaseService;
     private BalanceManagementService balanceManagementService;
     private UserManagementService userManagementService;
+    private TokenUtil tokenUtil;
 
     private AccountManagementService() {
         accountsDatabaseService = AccountsDatabaseService.getInstance();
         balanceManagementService = BalanceManagementService.getInstance();
         userManagementService = UserManagementService.getInstance();
+        tokenUtil = TokenUtil.getInstance();
     }
 
     public static AccountManagementService getInstance() {
         return accountManagementService;
     }
 
-    public Account addAccount(CreateAccount createAccount) {
-        User user = userManagementService.getUserById(createAccount.getUserId());
+    public Account addAccount(CreateAccount createAccount, String userId) {
+        User user = userManagementService.getUserById(userId);
         Account account = new Account();
-        DBAccount dbAccount = accountsDatabaseService.createAccount(createAccount);
+        DBAccount dbAccount = accountsDatabaseService.createAccount(createAccount, userId);
         account.setId(dbAccount.getId());
-        account.setUserId(dbAccount.getDbUser().getId());
+        account.setUserId(userId);
         account.setOwner(dbAccount.getOwner());
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
         account.setCreatedAt(dbAccount.getCreatedAt());
         account.setBalance(0.0);
-        return account;
+        if (account.getUserId().equals(userId)) {
+            return account;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
 
-    public void updateAccount(String id, UpdateAccount updateAccount) {
-        accountsDatabaseService.updateAccount(id, updateAccount);
+    public void updateAccount(String id, UpdateAccount updateAccount, String userId) {
+        userManagementService.getUserById(userId);
+        accountsDatabaseService.updateAccount(id, updateAccount, userId);
     }
 
-    public Account getAccountById(String id) {
+    public Account getAccountById(String id, String userId) {
         Account account = new Account();
         DBAccount dbAccount = accountsDatabaseService.findAccountById(id);
         account.setId(dbAccount.getId());
-        account.setUserId(dbAccount.getDbUser().getId());
+        account.setUserId(userId);
         account.setOwner(dbAccount.getOwner());
         account.setExpirationDate(dbAccount.getExpirationDate());
         account.setAccountName(dbAccount.getAccountName());
         account.setCreatedAt(dbAccount.getCreatedAt());
         account.setBalance(balanceManagementService.getBalance(account.getId()));
-        return account;
+        if (account.getUserId().equals(userId)) {
+            return account;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public List<Account> getAllAccounts() {
+
+    public List<Account> getAllAccounts(String userId) {
         List<Account> accounts = new ArrayList<>();
-        List<DBAccount> dbAccounts = accountsDatabaseService.getAllAccounts();
+        List<DBAccount> dbAccounts = accountsDatabaseService.getAllAccounts(userId);
         for (int i = 0; i < dbAccounts.size(); i++) {
             Account account = new Account();
             account.setId(dbAccounts.get(i).getId());
@@ -78,7 +90,8 @@ public class AccountManagementService {
         return accounts;
     }
 
-    public void deleteAccountById(String id) {
+    public void deleteAccountById(String id, String userId) {
+        getAccountById(id, userId);
         accountsDatabaseService.deleteAccount(id);
     }
 }

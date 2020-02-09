@@ -17,7 +17,7 @@ public class DBAccount {
     private String accountName;
     private LocalDateTime createdAt;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private DBUser dbUser;
     @OneToMany(mappedBy = "sourceAccountId")
     private List<DBTransaction> incomes;
