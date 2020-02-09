@@ -26,7 +26,6 @@ public class UserManagementService {
 
 
     public User addUser(CreateUser createUser) {
-        emailValidation(createUser.getEmail());
         DBUser dbUser = usersDatabaseService.createDbUser(createUser);
         User user = new User();
         user.setId(dbUser.getId());
@@ -40,7 +39,10 @@ public class UserManagementService {
         user.setCreatedAt(dbUser.getCreatedAt());
         return user;
     }
-
+    public String encryptPassword(CreateUser createUser){
+        String encryptedPassword= Base64.getEncoder().encodeToString(createUser.getPassword().getBytes());
+        return encryptedPassword;
+    }
     public User getUserById(String id) {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         User user = new User();
@@ -84,18 +86,10 @@ public class UserManagementService {
         usersDatabaseService.deleteUser(id);
     }
 
-    private void emailValidation(String email) {
-        List<User> allUsers = getAllUsers();
-        for (int i = 0; i < allUsers.size(); i++) {
-            if (allUsers.get(i).getEmail().equalsIgnoreCase(email)) {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
 
-    public User getUserByEmailAndPassword(UserLogin userLogin) {
-        String encodedPassword = Base64.getEncoder().encodeToString(userLogin.getPassword().getBytes());
-        DBUser dbUser = usersDatabaseService.findUserByEmailAndEncryptedPassword(userLogin.getEmail(), encodedPassword);
+    public User getUserByEmailAndPassword(String email, String password) {
+        String encodedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+        DBUser dbUser = usersDatabaseService.findUserByEmailAndEncryptedPassword(email, encodedPassword);
         User user = new User();
         user.setId(dbUser.getId());
         user.setFirstName(dbUser.getFirstName());

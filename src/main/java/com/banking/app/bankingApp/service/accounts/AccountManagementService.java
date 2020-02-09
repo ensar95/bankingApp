@@ -52,7 +52,7 @@ public class AccountManagementService {
 
     public void updateAccount(String id, UpdateAccount updateAccount, String userId) {
         userManagementService.getUserById(userId);
-        accountsDatabaseService.updateAccount(id, updateAccount);
+        accountsDatabaseService.updateAccount(id, updateAccount, userId);
     }
 
     public Account getAccountById(String id, String userId) {

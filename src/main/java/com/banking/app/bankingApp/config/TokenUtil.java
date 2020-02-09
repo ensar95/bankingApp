@@ -25,7 +25,7 @@ public class TokenUtil {
     }
 
     public JWTToken getToken(UserLogin userLogin) {
-        User user = userManagementService.getUserByEmailAndPassword(userLogin);
+        User user = userManagementService.getUserByEmailAndPassword(userLogin.getEmail(),userLogin.getPassword());
         String token = Jwts
                 .builder()
                 .setSubject(user.getId())

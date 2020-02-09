@@ -26,12 +26,12 @@ public class TransactionController {
     public ResponseEntity<Transaction> addTransaction(@RequestBody CreateTransaction createTransaction,
                                                       @RequestHeader(name = "Authorization") String authorization) {
         try {
-            String userId=tokenUtil.getIdFromToken(authorization);
+            String userId = tokenUtil.getIdFromToken(authorization);
             Transaction transaction = transactionManagementService.addTransaction(createTransaction, userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -42,12 +42,12 @@ public class TransactionController {
     public ResponseEntity<Transaction> getTransactionsByTransactionId(@PathVariable("id") String id,
                                                                       @RequestHeader(name = "Authorization") String authorization) {
         try {
-            String userId=tokenUtil.getIdFromToken(authorization);
-            Transaction transaction = transactionManagementService.getTransactionById(id,userId);
+            String userId = tokenUtil.getIdFromToken(authorization);
+            Transaction transaction = transactionManagementService.getTransactionById(id, userId);
             return ResponseEntity.status(HttpStatus.OK).body(transaction);
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -58,11 +58,11 @@ public class TransactionController {
     public ResponseEntity<List<Transaction>> getTransactionsByAccountId(@PathVariable("accountId") String accountId,
                                                                         @RequestHeader(name = "Authorization") String authorization) {
         try {
-            String id=tokenUtil.getIdFromToken(authorization);
-            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(accountId,id));
+            String id = tokenUtil.getIdFromToken(authorization);
+            return ResponseEntity.status(HttpStatus.OK).body(transactionManagementService.getAllTransactions(accountId, id));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -74,12 +74,12 @@ public class TransactionController {
                                             @PathVariable("id") String id,
                                             @RequestHeader(name = "Authorization") String authorization) {
         try {
-            String userId=tokenUtil.getIdFromToken(authorization);
+            String userId = tokenUtil.getIdFromToken(authorization);
             transactionManagementService.updateTransaction(id, updateTransaction, userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -92,10 +92,10 @@ public class TransactionController {
     public ResponseEntity deleteTransaction(@PathVariable("id") String id,
                                             @RequestHeader(name = "Authorization") String authorization) {
         try {
-            String userId=tokenUtil.getIdFromToken(authorization);
-            transactionManagementService.deleteTransaction(id,userId);
+            String userId = tokenUtil.getIdFromToken(authorization);
+            transactionManagementService.deleteTransaction(id, userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

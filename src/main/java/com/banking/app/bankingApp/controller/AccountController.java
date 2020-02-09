@@ -30,9 +30,9 @@ public class AccountController {
             Account account = accountManagementService.addAccount(createAccount, userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(account);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
