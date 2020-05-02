@@ -43,7 +43,7 @@ public class UsersDatabaseService {
         dbUser.setEmail(createUser.getEmail());
         dbUser.setDateOfBirth(createUser.getDateOfBirth());
         dbUser.setOccupation(createUser.getOccupation());
-        dbUser.setCurrentAdress(createUser.getCurrentAdress());
+        dbUser.setCurrentAddress(createUser.getCurrentAdress());
         dbUser.setPhoneNumber(createUser.getPhoneNumber());
         LocalDateTime now = LocalDateTime.now();
         dbUser.setCreatedAt(now);
@@ -92,7 +92,7 @@ public class UsersDatabaseService {
         dbUser.setEmail(updateUser.getEmail());
         dbUser.setDateOfBirth(updateUser.getDateOfBirth());
         dbUser.setOccupation(updateUser.getOccupation());
-        dbUser.setCurrentAdress(updateUser.getCurrentAdress());
+        dbUser.setCurrentAddress(updateUser.getCurrentAdress());
         dbUser.setPhoneNumber(updateUser.getPhoneNumber());
 
         session.update(dbUser);
@@ -104,8 +104,7 @@ public class UsersDatabaseService {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        DBUser dbUser = new DBUser();
-        dbUser.setId(id);
+        DBUser dbUser = findUserById(id);
 
         session.delete(dbUser);
         transaction.commit();

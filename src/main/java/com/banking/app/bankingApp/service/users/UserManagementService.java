@@ -4,7 +4,6 @@ import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
-import com.banking.app.bankingApp.request.users.UserLogin;
 import com.banking.app.bankingApp.response.users.User;
 
 import java.util.ArrayList;
@@ -34,15 +33,17 @@ public class UserManagementService {
         user.setEmail(dbUser.getEmail());
         user.setDateOfBirth(dbUser.getDateOfBirth());
         user.setOccupation(dbUser.getOccupation());
-        user.setCurrentAdress(dbUser.getCurrentAdress());
+        user.setCurrentAdress(dbUser.getCurrentAddress());
         user.setPhoneNumber(dbUser.getPhoneNumber());
         user.setCreatedAt(dbUser.getCreatedAt());
         return user;
     }
-    public String encryptPassword(CreateUser createUser){
-        String encryptedPassword= Base64.getEncoder().encodeToString(createUser.getPassword().getBytes());
+
+    public String encryptPassword(CreateUser createUser) {
+        String encryptedPassword = Base64.getEncoder().encodeToString(createUser.getPassword().getBytes());
         return encryptedPassword;
     }
+
     public User getUserById(String id) {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         User user = new User();
@@ -52,7 +53,7 @@ public class UserManagementService {
         user.setEmail(dbUser.getEmail());
         user.setDateOfBirth(dbUser.getDateOfBirth());
         user.setOccupation(dbUser.getOccupation());
-        user.setCurrentAdress(dbUser.getCurrentAdress());
+        user.setCurrentAdress(dbUser.getCurrentAddress());
         user.setPhoneNumber(dbUser.getPhoneNumber());
         user.setCreatedAt(dbUser.getCreatedAt());
         return user;
@@ -73,7 +74,7 @@ public class UserManagementService {
             user.setEmail(allDbUsers.get(i).getEmail());
             user.setDateOfBirth(allDbUsers.get(i).getDateOfBirth());
             user.setOccupation(allDbUsers.get(i).getOccupation());
-            user.setCurrentAdress(allDbUsers.get(i).getCurrentAdress());
+            user.setCurrentAdress(allDbUsers.get(i).getCurrentAddress());
             user.setPhoneNumber(allDbUsers.get(i).getPhoneNumber());
             user.setCreatedAt(allDbUsers.get(i).getCreatedAt());
             allUsers.add(user);
@@ -97,7 +98,7 @@ public class UserManagementService {
         user.setEmail(dbUser.getEmail());
         user.setDateOfBirth(dbUser.getDateOfBirth());
         user.setOccupation(dbUser.getOccupation());
-        user.setCurrentAdress(dbUser.getCurrentAdress());
+        user.setCurrentAdress(dbUser.getCurrentAddress());
         user.setPhoneNumber(dbUser.getPhoneNumber());
         user.setCreatedAt(dbUser.getCreatedAt());
         return user;

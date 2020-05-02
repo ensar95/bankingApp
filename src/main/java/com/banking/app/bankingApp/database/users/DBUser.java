@@ -1,11 +1,13 @@
 package com.banking.app.bankingApp.database.users;
 
 import com.banking.app.bankingApp.database.accounts.DBAccount;
+import com.banking.app.bankingApp.database.roles.DBRoles;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,23 +19,30 @@ public class DBUser {
     private String firstName;
     @NotEmpty(message = "  ")
     private String lastName;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     @NotNull(message = "Date of birth has to entered")
     private Date dateOfBirth;
     @NotEmpty(message = "Occupation has to be entered")
     private String occupation;
-    @NotEmpty(message = "Current adress has to be entered")
-    private String currentAdress;
+    @NotEmpty(message = "Current address has to be entered")
+    private String currentAddress;
     @NotEmpty(message = "Phone number has to entered")
     private String phoneNumber;
     private String encryptedPassword;
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DBAccount> dbAccount;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "roleAssign",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private List<DBRoles> dbRoles = new ArrayList<>();
 
     public DBUser() {
     }
+
+
 
     public String getEncryptedPassword() {
         return encryptedPassword;
@@ -99,12 +108,12 @@ public class DBUser {
         this.occupation = occupation;
     }
 
-    public String getCurrentAdress() {
-        return currentAdress;
+    public String getCurrentAddress() {
+        return currentAddress;
     }
 
-    public void setCurrentAdress(String currentAdress) {
-        this.currentAdress = currentAdress;
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
     }
 
     public String getPhoneNumber() {
