@@ -33,7 +33,7 @@ public class UserRestControllerTest {
         CreateUser createUser=new CreateUser();
         createUser.setFirstName("Ensar");
         createUser.setLastName("Skopljak");
-        createUser.setCurrentAdress("adresa");
+        createUser.setCurrentAddress("adresa");
         createUser.setDateOfBirth(new Date(1995-02-19));
         createUser.setEmail("ensar@nesto");
         createUser.setOccupation("unemployed");

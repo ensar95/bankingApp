@@ -1,5 +1,6 @@
 package com.banking.app.bankingApp.database.users;
 
+import com.banking.app.bankingApp.config.SecurityConstants;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
 import com.banking.app.bankingApp.service.users.UserManagementService;
@@ -8,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -17,7 +19,7 @@ import java.util.UUID;
 /* UsersDatabaseService is singleton service */
 
 public class UsersDatabaseService {
-    private static final UsersDatabaseService userDatabaseService = new UsersDatabaseService();
+    private static  UsersDatabaseService userDatabaseService = new UsersDatabaseService();
     private UserManagementService userManagementService;
     private SessionFactory sessionFactory;
 
@@ -25,6 +27,7 @@ public class UsersDatabaseService {
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
         userManagementService = UserManagementService.getInstance();
+        System.out.println();
     }
 
     public static UsersDatabaseService getInstance() {
@@ -43,11 +46,13 @@ public class UsersDatabaseService {
         dbUser.setEmail(createUser.getEmail());
         dbUser.setDateOfBirth(createUser.getDateOfBirth());
         dbUser.setOccupation(createUser.getOccupation());
-        dbUser.setCurrentAddress(createUser.getCurrentAdress());
+        dbUser.setCurrentAddress(createUser.getCurrentAddress());
         dbUser.setPhoneNumber(createUser.getPhoneNumber());
         LocalDateTime now = LocalDateTime.now();
         dbUser.setCreatedAt(now);
-        dbUser.setEncryptedPassword(userManagementService.encryptPassword(createUser));
+        String salt=BCrypt.gensalt();
+        dbUser.setEncryptedPassword(userManagementService.encryptPassword(createUser.getPassword(), salt));
+        dbUser.setSalt(salt);
 
         session.save(dbUser);
         transaction.commit();
@@ -63,11 +68,10 @@ public class UsersDatabaseService {
         return allUsers;
     }
 
-    public DBUser findUserByEmailAndEncryptedPassword(String email, String password) {
+    public DBUser findUserByEmail(String email) {
         Session session = sessionFactory.openSession();
-        Query<DBUser> query = session.createQuery("select u from DBUser u where u.email=:userEmail and u.encryptedPassword=:password", DBUser.class);
+        Query<DBUser> query = session.createQuery("select u from DBUser u where u.email=:userEmail", DBUser.class);
         query.setParameter("userEmail", email);
-        query.setParameter("password", password);
         DBUser foundUser = query.getSingleResult();
         session.close();
         return foundUser;
@@ -92,7 +96,7 @@ public class UsersDatabaseService {
         dbUser.setEmail(updateUser.getEmail());
         dbUser.setDateOfBirth(updateUser.getDateOfBirth());
         dbUser.setOccupation(updateUser.getOccupation());
-        dbUser.setCurrentAddress(updateUser.getCurrentAdress());
+        dbUser.setCurrentAddress(updateUser.getCurrentAddress());
         dbUser.setPhoneNumber(updateUser.getPhoneNumber());
 
         session.update(dbUser);

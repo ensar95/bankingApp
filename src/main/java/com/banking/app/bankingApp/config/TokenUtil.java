@@ -12,7 +12,7 @@ import java.security.Key;
 import java.util.Date;
 
 public class TokenUtil {
-    private static final TokenUtil tokenUtil = new TokenUtil();
+    private static TokenUtil tokenUtil;
     private UserManagementService userManagementService;
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
@@ -21,11 +21,14 @@ public class TokenUtil {
     }
 
     public static TokenUtil getInstance() {
+        if (tokenUtil == null) {
+            tokenUtil = new TokenUtil();
+        }
         return tokenUtil;
     }
 
     public JWTToken getToken(UserLogin userLogin) {
-        User user = userManagementService.getUserByEmailAndPassword(userLogin.getEmail(),userLogin.getPassword());
+        User user = userManagementService.getUserByEmailAndPassword(userLogin.getEmail(), userLogin.getPassword());
         String token = Jwts
                 .builder()
                 .setSubject(user.getId())

@@ -11,7 +11,7 @@ public class User {
     private String email;
     private Date dateOfBirth;
     private String occupation;
-    private String currentAdress;
+    private String currentAddress;
     private String phoneNumber;
     private LocalDateTime createdAt;
 
@@ -74,12 +74,12 @@ public class User {
         this.occupation = occupation;
     }
 
-    public String getCurrentAdress() {
-        return currentAdress;
+    public String getCurrentAddress() {
+        return currentAddress;
     }
 
-    public void setCurrentAdress(String currentAdress) {
-        this.currentAdress = currentAdress;
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
     }
 
     public String getPhoneNumber() {

@@ -27,10 +27,11 @@ public class DBUser {
     private String occupation;
     @NotEmpty(message = "Current address has to be entered")
     private String currentAddress;
-    @NotEmpty(message = "Phone number has to entered")
+    @NotEmpty(message = "Phone number has to be entered")
     private String phoneNumber;
     private String encryptedPassword;
     private LocalDateTime createdAt;
+    private String salt;
     @OneToMany(mappedBy = "dbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DBAccount> dbAccount;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -42,7 +43,21 @@ public class DBUser {
     public DBUser() {
     }
 
+    public String getSalt() {
+        return salt;
+    }
 
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public List<DBRoles> getDbRoles() {
+        return dbRoles;
+    }
+
+    public void setDbRoles(List<DBRoles> dbRoles) {
+        this.dbRoles = dbRoles;
+    }
 
     public String getEncryptedPassword() {
         return encryptedPassword;

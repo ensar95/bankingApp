@@ -27,8 +27,9 @@ public class SecurityFilter implements Filter {
         String authHeader = httpRequest.getHeader("Authorization");
         String currentURI = httpRequest.getRequestURI();
         String userURI = "/users";
+        String roleURI = "/roles";
         String tokenURI = "/token";
-        if (currentURI.startsWith(userURI) || currentURI.startsWith(tokenURI)) {
+        if (currentURI.startsWith(userURI) || currentURI.startsWith(tokenURI) || currentURI.startsWith(roleURI)) {
             chain.doFilter(request, response);
         } else {
             try {

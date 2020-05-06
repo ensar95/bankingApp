@@ -9,7 +9,7 @@ public class UpdateUser {
         private String email;
         private Date dateOfBirth;
         private String occupation;
-        private String currentAdress;
+        private String currentAddress;
         private String phoneNumber;
 
         public UpdateUser() {
@@ -63,12 +63,12 @@ public class UpdateUser {
         this.occupation = occupation;
     }
 
-    public String getCurrentAdress() {
-        return currentAdress;
+    public String getCurrentAddress() {
+        return currentAddress;
     }
 
-    public void setCurrentAdress(String currentAdress) {
-        this.currentAdress = currentAdress;
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
     }
 
     public String getPhoneNumber() {
