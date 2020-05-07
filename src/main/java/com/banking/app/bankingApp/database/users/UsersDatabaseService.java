@@ -1,6 +1,7 @@
 package com.banking.app.bankingApp.database.users;
 
-import com.banking.app.bankingApp.config.SecurityConstants;
+import com.banking.app.bankingApp.database.roles.DBRoles;
+import com.banking.app.bankingApp.request.roleUserAssign.AssignRole;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
 import com.banking.app.bankingApp.service.users.UserManagementService;
@@ -19,7 +20,7 @@ import java.util.UUID;
 /* UsersDatabaseService is singleton service */
 
 public class UsersDatabaseService {
-    private static  UsersDatabaseService userDatabaseService = new UsersDatabaseService();
+    private static UsersDatabaseService userDatabaseService = new UsersDatabaseService();
     private UserManagementService userManagementService;
     private SessionFactory sessionFactory;
 
@@ -27,7 +28,6 @@ public class UsersDatabaseService {
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
         userManagementService = UserManagementService.getInstance();
-        System.out.println();
     }
 
     public static UsersDatabaseService getInstance() {
@@ -50,7 +50,7 @@ public class UsersDatabaseService {
         dbUser.setPhoneNumber(createUser.getPhoneNumber());
         LocalDateTime now = LocalDateTime.now();
         dbUser.setCreatedAt(now);
-        String salt=BCrypt.gensalt();
+        String salt = BCrypt.gensalt();
         dbUser.setEncryptedPassword(userManagementService.encryptPassword(createUser.getPassword(), salt));
         dbUser.setSalt(salt);
 
@@ -111,6 +111,18 @@ public class UsersDatabaseService {
         DBUser dbUser = findUserById(id);
 
         session.delete(dbUser);
+        transaction.commit();
+        session.close();
+    }
+    public void addRoleToUser(DBRoles dbRoles, String userId){
+        Session session=sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        DBUser dbUser=findUserById(userId);
+        List<DBRoles> userRoles=dbUser.getDbRoles();
+        userRoles.add(dbRoles);
+
+        session.save(dbUser);
         transaction.commit();
         session.close();
     }

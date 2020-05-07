@@ -1,5 +1,6 @@
 package com.banking.app.bankingApp.database.roles;
 
+import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.request.roles.CreateRole;
 import com.banking.app.bankingApp.request.roles.UpdateRole;
 import org.hibernate.Session;
@@ -78,6 +79,18 @@ public class RolesDatabaseService {
         DBRoles dbRoles= getRoleById(id);
 
         session.delete(dbRoles);
+        transaction.commit();
+        session.close();
+    }
+    public void addUserToRole(DBUser dbUser, String roleId){
+        Session session=sessionFactory.openSession();
+        Transaction transaction=session.beginTransaction();
+
+        DBRoles dbRoles = getRoleById(roleId);
+        List<DBUser> dbUsers=dbRoles.getDbUser();
+        dbUsers.add(dbUser);
+
+        session.save(dbRoles);
         transaction.commit();
         session.close();
     }

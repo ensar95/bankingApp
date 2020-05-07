@@ -36,8 +36,8 @@ public class DBUser {
     private List<DBAccount> dbAccount;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "roleAssign",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "roleId"))
+            joinColumns = @JoinColumn(name = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "userId"))
     private List<DBRoles> dbRoles = new ArrayList<>();
 
     public DBUser() {

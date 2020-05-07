@@ -1,16 +1,13 @@
 package com.banking.app.bankingApp.service.users;
 
-import com.banking.app.bankingApp.config.SecurityConstants;
+import com.banking.app.bankingApp.database.roles.DBRoles;
 import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
 import com.banking.app.bankingApp.response.users.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,23 +91,25 @@ public class UserManagementService {
         usersDatabaseService.deleteUser(id);
     }
 
+
+
     public User getUserByEmailAndPassword(String email, String password) {
         DBUser dbUser = usersDatabaseService.findUserByEmail(email);
-        String hashPassword=BCrypt.hashpw(password,dbUser.getSalt());
+        String hashPassword = BCrypt.hashpw(password, dbUser.getSalt());
         System.out.println(hashPassword);
         System.out.println(dbUser.getEncryptedPassword());
-        BCrypt.checkpw(hashPassword,dbUser.getEncryptedPassword());
-            User user = new User();
-            user.setId(dbUser.getId());
-            user.setFirstName(dbUser.getFirstName());
-            user.setLastName(dbUser.getLastName());
-            user.setEmail(dbUser.getEmail());
-            user.setDateOfBirth(dbUser.getDateOfBirth());
-            user.setOccupation(dbUser.getOccupation());
-            user.setCurrentAddress(dbUser.getCurrentAddress());
-            user.setPhoneNumber(dbUser.getPhoneNumber());
-            user.setCreatedAt(dbUser.getCreatedAt());
-            return user;
+        BCrypt.checkpw(hashPassword, dbUser.getEncryptedPassword());
+        User user = new User();
+        user.setId(dbUser.getId());
+        user.setFirstName(dbUser.getFirstName());
+        user.setLastName(dbUser.getLastName());
+        user.setEmail(dbUser.getEmail());
+        user.setDateOfBirth(dbUser.getDateOfBirth());
+        user.setOccupation(dbUser.getOccupation());
+        user.setCurrentAddress(dbUser.getCurrentAddress());
+        user.setPhoneNumber(dbUser.getPhoneNumber());
+        user.setCreatedAt(dbUser.getCreatedAt());
+        return user;
 
     }
 

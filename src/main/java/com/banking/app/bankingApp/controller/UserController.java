@@ -1,5 +1,7 @@
 package com.banking.app.bankingApp.controller;
 
+import com.banking.app.bankingApp.config.AuthorizationValidationRules;
+import com.banking.app.bankingApp.config.TokenUtil;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
 import com.banking.app.bankingApp.response.users.User;
@@ -14,18 +16,20 @@ import java.util.List;
 
 public class UserController {
     private UserManagementService userManagementService;
-
-
+    private TokenUtil tokenUtil;
+    private AuthorizationValidationRules authorizationValidationRules;
     public UserController() {
         userManagementService = UserManagementService.getInstance();
+        tokenUtil=TokenUtil.getInstance();
     }
 
     @PostMapping(value = "/users")
 
-    public ResponseEntity<User> addUser(@RequestBody CreateUser createUser) {
+    public ResponseEntity<User> addUser(@RequestBody CreateUser createUser,
+                                        @RequestHeader(name="Authorization") String authorization) {
 
         try {
-
+            authorizationValidationRules.checkUserCreateRole(tokenUtil.getIdFromToken(authorization));
             User createdUser = userManagementService.addUser(createUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (IllegalArgumentException e) {
@@ -38,9 +42,10 @@ public class UserController {
 
     @GetMapping(value = "/users/{id}")
 
-    public ResponseEntity<User> getUserById(@PathVariable("id") String id) {
+    public ResponseEntity<User> getUserById(@PathVariable("id") String id,
+                                            @RequestHeader(name="Authorization") String authorization) {
         try {
-
+            authorizationValidationRules.checkGetAllUsersRole(tokenUtil.getIdFromToken(authorization));
             User foundUser = userManagementService.getUserById(id);
             return ResponseEntity.status(HttpStatus.OK).body(foundUser);
         } catch (IllegalArgumentException e) {
@@ -52,14 +57,21 @@ public class UserController {
 
     @GetMapping(value = "/users")
 
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body(userManagementService.getAllUsers());
+    public ResponseEntity<List<User>> getAllUsers(@RequestHeader(name="Authorization")String authorization) {
+        try{
+            authorizationValidationRules.checkGetAllUsersRole(tokenUtil.getIdFromToken(authorization));
+            return ResponseEntity.status(HttpStatus.OK).body(userManagementService.getAllUsers());
+    }catch (RuntimeException e){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @PutMapping(value = "/users/{id}")
     public ResponseEntity updateUser(@RequestBody UpdateUser updateUser,
-                                     @PathVariable("id") String id) {
+                                     @PathVariable("id") String id,
+                                     @RequestHeader(name="Authorization") String authorization) {
         try {
+            authorizationValidationRules.checkUpdateUserRole(tokenUtil.getIdFromToken(authorization));
             userManagementService.getUserById(id);
             userManagementService.updateUser(id, updateUser);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -71,8 +83,10 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/users/{id}")
-    public ResponseEntity deleteUser(@PathVariable("id") String id) {
+    public ResponseEntity deleteUser(@PathVariable("id") String id,
+                                     @RequestHeader(name="Authorization") String authorization) {
         try {
+            authorizationValidationRules.checkDeleteUserRole(tokenUtil.getIdFromToken(authorization));
             userManagementService.deleteUser(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (IllegalArgumentException e) {

@@ -11,6 +11,11 @@ public class CreateRole {
     public CreateRole() {
     }
 
+    public CreateRole(String roleName, String roleDescription) {
+        this.roleName = roleName;
+        this.roleDescription = roleDescription;
+    }
+
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }

@@ -59,4 +59,12 @@ public class DBRoles {
     public void setRoleDescription(String roleDescription) {
         this.roleDescription = roleDescription;
     }
+
+    public List<DBUser> getDbUser() {
+        return dbUser;
+    }
+
+    public void setDbUser(List<DBUser> dbUser) {
+        this.dbUser = dbUser;
+    }
 }
