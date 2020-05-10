@@ -2,6 +2,7 @@ package com.banking.app.bankingApp.controller;
 
 import com.banking.app.bankingApp.config.AuthorizationValidationRules;
 import com.banking.app.bankingApp.config.TokenUtil;
+import com.banking.app.bankingApp.exceptions.UserRoleNotAllowed;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
 import com.banking.app.bankingApp.response.users.User;
@@ -29,7 +30,7 @@ public class UserController {
                                         @RequestHeader(name="Authorization") String authorization) {
 
         try {
-            authorizationValidationRules.checkUserCreateRole(tokenUtil.getIdFromToken(authorization));
+            authorizationValidationRules.checkUserRole(tokenUtil.getIdFromToken(authorization),"createUser");
             User createdUser = userManagementService.addUser(createUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (IllegalArgumentException e) {
@@ -45,7 +46,7 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable("id") String id,
                                             @RequestHeader(name="Authorization") String authorization) {
         try {
-            authorizationValidationRules.checkGetAllUsersRole(tokenUtil.getIdFromToken(authorization));
+            authorizationValidationRules.checkUserRole(tokenUtil.getIdFromToken(authorization),"getUser");
             User foundUser = userManagementService.getUserById(id);
             return ResponseEntity.status(HttpStatus.OK).body(foundUser);
         } catch (IllegalArgumentException e) {
@@ -59,10 +60,12 @@ public class UserController {
 
     public ResponseEntity<List<User>> getAllUsers(@RequestHeader(name="Authorization")String authorization) {
         try{
-            authorizationValidationRules.checkGetAllUsersRole(tokenUtil.getIdFromToken(authorization));
+            authorizationValidationRules.checkUserRole(tokenUtil.getIdFromToken(authorization),"getUser");
             return ResponseEntity.status(HttpStatus.OK).body(userManagementService.getAllUsers());
-    }catch (RuntimeException e){
+    }catch (UserRoleNotAllowed e){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -71,7 +74,7 @@ public class UserController {
                                      @PathVariable("id") String id,
                                      @RequestHeader(name="Authorization") String authorization) {
         try {
-            authorizationValidationRules.checkUpdateUserRole(tokenUtil.getIdFromToken(authorization));
+            authorizationValidationRules.checkUserRole(tokenUtil.getIdFromToken(authorization),"updateUser");
             userManagementService.getUserById(id);
             userManagementService.updateUser(id, updateUser);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -86,7 +89,7 @@ public class UserController {
     public ResponseEntity deleteUser(@PathVariable("id") String id,
                                      @RequestHeader(name="Authorization") String authorization) {
         try {
-            authorizationValidationRules.checkDeleteUserRole(tokenUtil.getIdFromToken(authorization));
+            authorizationValidationRules.checkUserRole(tokenUtil.getIdFromToken(authorization),"deleteUser");
             userManagementService.deleteUser(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (IllegalArgumentException e) {
