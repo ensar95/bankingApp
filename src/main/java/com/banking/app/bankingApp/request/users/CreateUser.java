@@ -9,11 +9,29 @@ public class CreateUser {
     private String email;
     private Date dateOfBirth;
     private String occupation;
-    private String currentAdress;
+    private String currentAddress;
     private String phoneNumber;
     private String password;
 
     public CreateUser() {
+    }
+
+    public CreateUser(String firstName,
+                      String lastName,
+                      String email,
+                      Date dateOfBirth,
+                      String occupation,
+                      String currentAddress,
+                      String phoneNumber,
+                      String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.occupation = occupation;
+        this.currentAddress = currentAddress;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
     public String getPassword() {
@@ -64,12 +82,12 @@ public class CreateUser {
         this.occupation = occupation;
     }
 
-    public String getCurrentAdress() {
-        return currentAdress;
+    public String getCurrentAddress() {
+        return currentAddress;
     }
 
-    public void setCurrentAdress(String currentAdress) {
-        this.currentAdress = currentAdress;
+    public void setCurrentAddress(String currentAddress) {
+        this.currentAddress = currentAddress;
     }
 
     public String getPhoneNumber() {

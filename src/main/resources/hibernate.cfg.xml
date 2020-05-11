@@ -25,5 +25,6 @@
         <mapping class="com.banking.app.bankingApp.database.users.DBUser" />
         <mapping class="com.banking.app.bankingApp.database.accounts.DBAccount"/>
         <mapping class="com.banking.app.bankingApp.database.transactions.DBTransaction"/>
+        <mapping class="com.banking.app.bankingApp.database.roles.DBRoles"/>
     </session-factory>
 </hibernate-configuration>
