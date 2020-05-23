@@ -29,7 +29,8 @@ public class SecurityFilter implements Filter {
         String userURI = "/users";
         String roleURI = "/roles";
         String tokenURI = "/token";
-        if (currentURI.startsWith(userURI) || currentURI.startsWith(tokenURI) || currentURI.startsWith(roleURI)) {
+        String emailURI = "/email";
+        if (currentURI.startsWith(userURI) || currentURI.startsWith(tokenURI) || currentURI.startsWith(emailURI) || currentURI.startsWith(roleURI)) {
             chain.doFilter(request, response);
         } else {
             try {
