@@ -3,21 +3,19 @@ package com.banking.app.bankingApp.config;
 import com.banking.app.bankingApp.database.roles.DBRoles;
 import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class AuthorizationValidationRules {
-    private static final AuthorizationValidationRules authorizationValidationRules = new AuthorizationValidationRules();
+    @Autowired
     private UsersDatabaseService usersDatabaseService;
 
     private AuthorizationValidationRules() {
-        usersDatabaseService = UsersDatabaseService.getInstance();
     }
 
-    public static AuthorizationValidationRules getInstance() {
-        return authorizationValidationRules;
-    }
 
     public boolean checkUserCreateRole(String id) {
         DBUser dbUser = usersDatabaseService.findUserById(id);

@@ -1,29 +1,28 @@
 package com.banking.app.bankingApp.controller;
 
-import com.banking.app.bankingApp.service.email.EmailManagementService;
+import com.banking.app.bankingApp.request.email.CheckEmailVerificationCode;
+import com.banking.app.bankingApp.service.email.EmailVerificationManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import java.io.IOException;
+import javax.persistence.NoResultException;
 
 @RestController
 public class EmailController {
-    private EmailManagementService emailManagementService = EmailManagementService.getInstance();
+    @Autowired
+    EmailVerificationManagementService emailVerificationManagementService;
+
     @PostMapping(value = "/email")
-    public ResponseEntity sendEmail() {
+    public ResponseEntity verifyEmail(@RequestBody CheckEmailVerificationCode checkEmailVerificationCode) {
         try {
-            emailManagementService.sendEmail();
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }catch (AddressException e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
-        }catch (MessagingException e){
+            emailVerificationManagementService.checkVerificationCode(checkEmailVerificationCode.getCode(),checkEmailVerificationCode.getUserId());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();}
+        catch (NoResultException | IllegalStateException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }catch (IOException e){
-            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

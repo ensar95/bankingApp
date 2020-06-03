@@ -1,6 +1,7 @@
 package com.banking.app.bankingApp.database.users;
 
 import com.banking.app.bankingApp.database.accounts.DBAccount;
+import com.banking.app.bankingApp.database.email.DBEmailVerificationCode;
 import com.banking.app.bankingApp.database.roles.DBRoles;
 
 import javax.persistence.*;
@@ -39,8 +40,18 @@ public class DBUser {
             joinColumns = @JoinColumn(name = "roleId"),
             inverseJoinColumns = @JoinColumn(name = "userId"))
     private List<DBRoles> dbRoles = new ArrayList<>();
+    @OneToMany(mappedBy = "dbUser")
+    private List<DBEmailVerificationCode> dbEmailVerificationCodes;
 
     public DBUser() {
+    }
+
+    public List<DBEmailVerificationCode> getDbEmailVerificationCodes() {
+        return dbEmailVerificationCodes;
+    }
+
+    public void setDbEmailVerificationCodes(List<DBEmailVerificationCode> dbEmailVerificationCodes) {
+        this.dbEmailVerificationCodes = dbEmailVerificationCodes;
     }
 
     public String getSalt() {

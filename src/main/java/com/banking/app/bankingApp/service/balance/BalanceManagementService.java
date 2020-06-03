@@ -5,24 +5,22 @@ import com.banking.app.bankingApp.database.accounts.DBAccount;
 import com.banking.app.bankingApp.database.transactions.DBTransaction;
 import com.banking.app.bankingApp.database.transactions.TransactionsDatabaseService;
 import com.banking.app.bankingApp.service.accounts.AccountManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class BalanceManagementService {
-    private static final BalanceManagementService balanceManagementService = new BalanceManagementService();
+    @Autowired
     private AccountManagementService accountManagementService;
+    @Autowired
     private AccountsDatabaseService accountsDatabaseService;
+    @Autowired
     private TransactionsDatabaseService transactionsDatabaseService;
 
     private BalanceManagementService() {
-        transactionsDatabaseService = TransactionsDatabaseService.getInstance();
-        accountsDatabaseService = AccountsDatabaseService.getInstance();
-        accountManagementService = AccountManagementService.getInstance();
     }
 
-    public static BalanceManagementService getInstance() {
-        return balanceManagementService;
-    }
 
     private Double getIncome(String id) {
         DBAccount dbAccount = accountsDatabaseService.findAccountById(id);

@@ -11,6 +11,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -18,20 +20,16 @@ import java.util.List;
 import java.util.UUID;
 
 /* UsersDatabaseService is singleton service */
-
+@Service
 public class UsersDatabaseService {
-    private static UsersDatabaseService userDatabaseService = new UsersDatabaseService();
-    private UserManagementService userManagementService;
     private SessionFactory sessionFactory;
+    @Autowired
+    private UserManagementService userManagementService;
 
     private UsersDatabaseService() {
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
-        userManagementService = UserManagementService.getInstance();
-    }
 
-    public static UsersDatabaseService getInstance() {
-        return userDatabaseService;
     }
 
     public DBUser createDbUser(CreateUser createUser) {

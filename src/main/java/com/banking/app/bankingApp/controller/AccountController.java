@@ -5,6 +5,7 @@ import com.banking.app.bankingApp.request.accounts.CreateAccount;
 import com.banking.app.bankingApp.request.accounts.UpdateAccount;
 import com.banking.app.bankingApp.response.accounts.Account;
 import com.banking.app.bankingApp.service.accounts.AccountManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,12 @@ import java.util.List;
 
 @RestController
 public class AccountController {
+    @Autowired
     private AccountManagementService accountManagementService;
+    @Autowired
     private TokenUtil tokenUtil;
 
     public AccountController() {
-        accountManagementService = AccountManagementService.getInstance();
-        tokenUtil = TokenUtil.getInstance();
     }
 
     @PostMapping(value = "/accounts")

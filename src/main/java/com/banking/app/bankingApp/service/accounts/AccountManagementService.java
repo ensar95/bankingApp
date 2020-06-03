@@ -9,27 +9,26 @@ import com.banking.app.bankingApp.response.accounts.Account;
 import com.banking.app.bankingApp.response.users.User;
 import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 import com.banking.app.bankingApp.service.users.UserManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class AccountManagementService {
-    private static final AccountManagementService accountManagementService = new AccountManagementService();
+    @Autowired
     private AccountsDatabaseService accountsDatabaseService;
+    @Autowired
     private BalanceManagementService balanceManagementService;
+    @Autowired
     private UserManagementService userManagementService;
+    @Autowired
     private TokenUtil tokenUtil;
 
     private AccountManagementService() {
-        accountsDatabaseService = AccountsDatabaseService.getInstance();
-        balanceManagementService = BalanceManagementService.getInstance();
-        userManagementService = UserManagementService.getInstance();
-        tokenUtil = TokenUtil.getInstance();
+
     }
 
-    public static AccountManagementService getInstance() {
-        return accountManagementService;
-    }
 
     public Account addAccount(CreateAccount createAccount, String userId) {
         User user = userManagementService.getUserById(userId);

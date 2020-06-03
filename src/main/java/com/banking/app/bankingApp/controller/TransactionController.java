@@ -5,6 +5,7 @@ import com.banking.app.bankingApp.request.transactions.CreateTransaction;
 import com.banking.app.bankingApp.request.transactions.UpdateTransaction;
 import com.banking.app.bankingApp.response.transactions.Transaction;
 import com.banking.app.bankingApp.service.transactions.TransactionManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,12 @@ import java.util.List;
 
 @RestController
 public class TransactionController {
+    @Autowired
     private TransactionManagementService transactionManagementService;
+    @Autowired
     private TokenUtil tokenUtil;
 
     public TransactionController() {
-        transactionManagementService = TransactionManagementService.getInstance();
-        tokenUtil = TokenUtil.getInstance();
     }
 
     @PostMapping(value = "/transactions")

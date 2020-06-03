@@ -8,25 +8,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class AccountsDatabaseService {
-    private static final AccountsDatabaseService accountsDatabaseService = new AccountsDatabaseService();
+    @Autowired
     private UsersDatabaseService usersDatabaseService;
     private SessionFactory sessionFactory;
 
     private AccountsDatabaseService() {
-        usersDatabaseService = UsersDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
-    }
-
-    public static AccountsDatabaseService getInstance() {
-        return accountsDatabaseService;
     }
 
     public DBAccount createAccount(CreateAccount createAccount, String userId) {

@@ -9,30 +9,29 @@ import com.banking.app.bankingApp.service.balance.BalanceManagementService;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AnalyticsManagementService {
-    private static final AnalyticsManagementService analiticsManagementService = new AnalyticsManagementService();
+    @Autowired
     private BalanceManagementService balanceManagementService;
+    @Autowired
     private TransactionsDatabaseService transactionsDatabaseService;
+    @Autowired
     private AccountManagementService accountManagementService;
+    @Autowired
     private TokenUtil tokenUtil;
 
     private AnalyticsManagementService() {
-        accountManagementService = AccountManagementService.getInstance();
-        transactionsDatabaseService = TransactionsDatabaseService.getInstance();
-        balanceManagementService = BalanceManagementService.getInstance();
-        tokenUtil=TokenUtil.getInstance();
     }
 
-    public static AnalyticsManagementService getInstance() {
-        return analiticsManagementService;
-    }
 
     public List<Analytics> getAnalytics(String accountId, String startDate, String endDate, String userId) {
-        validateAnalyticsAccountId(accountId,userId);
+        validateAnalyticsAccountId(accountId, userId);
         DateTimeFormatter formatterJodaLocalDateTime = DateTimeFormat.forPattern("yyyy-MM");
         LocalDateTime startingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(startDate));
         LocalDateTime endingDate = new LocalDateTime(formatterJodaLocalDateTime.parseDateTime(endDate));
@@ -49,7 +48,7 @@ public class AnalyticsManagementService {
             java.time.LocalDateTime nextDateJavaType = java.time.LocalDateTime.of(nextDate.getYear(), nextDate.getMonthOfYear(), nextDate.getDayOfMonth(), 00, 00);
 
             Analytics analytics = new Analytics();
-            List<DBTransaction> dbTransactions = transactionsDatabaseService.getAllTransactionsByDateForId(accountId,currentDateJavaType, nextDateJavaType);
+            List<DBTransaction> dbTransactions = transactionsDatabaseService.getAllTransactionsByDateForId(accountId, currentDateJavaType, nextDateJavaType);
 
             analytics.setDate(currentDateJavaType);
             Double expenses = 0.0;
@@ -80,12 +79,12 @@ public class AnalyticsManagementService {
     }
 
     private void validateAnalyticsDate(LocalDateTime startDate, LocalDateTime endDate) {
-        if (!(startDate.isBefore(endDate))|| startDate.equals(endDate)) {
+        if (!(startDate.isBefore(endDate)) || startDate.equals(endDate)) {
             throw new IllegalStateException();
         }
     }
 
     private void validateAnalyticsAccountId(String id, String userId) {
-        accountManagementService.getAccountById(id,userId);
+        accountManagementService.getAccountById(id, userId);
     }
 }
