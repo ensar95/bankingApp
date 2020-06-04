@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,7 +25,16 @@ public class DBEmailVerificationCodeDatabaseService {
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
     }
+    public List<DBEmailVerificationCode> getPreviousCodes(String userId){
+        Session session = sessionFactory.openSession();
 
+        Query<DBEmailVerificationCode> query = session.createQuery("from DBEmailVerificationCode v where v.dbUser.id=:userId",DBEmailVerificationCode.class);
+        query.setParameter("userId", userId);
+        List<DBEmailVerificationCode> dbEmailVerificationCodes = query.getResultList();
+
+        session.close();
+        return dbEmailVerificationCodes;
+    }
     public DBEmailVerificationCode createVerificationCode(String userId, String code) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
