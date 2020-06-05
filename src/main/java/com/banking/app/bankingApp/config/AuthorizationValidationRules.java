@@ -17,55 +17,13 @@ public class AuthorizationValidationRules {
     }
 
 
-    public boolean checkUserCreateRole(String id) {
+    public boolean checkUserRole(String id, String role) {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         List<DBRoles> dbRolesList = new ArrayList<>();
         dbRolesList.addAll(dbUser.getDbRoles());
         for (int i = 0; i < dbRolesList.size(); i++) {
             if (dbRolesList.get(i).getRoleName().equalsIgnoreCase("root")
-                    || dbRolesList.get(i).getRoleName().equalsIgnoreCase("createuser")) {
-                return true;
-            } else {
-                throw new RuntimeException();
-            }
-        }
-        return false;
-    }
-    public boolean checkGetAllUsersRole(String id){
-        DBUser dbUser = usersDatabaseService.findUserById(id);
-        List<DBRoles> dbRolesList = new ArrayList<>();
-        dbRolesList.addAll(dbUser.getDbRoles());
-        for (int i = 0; i < dbRolesList.size(); i++) {
-            if (dbRolesList.get(i).getRoleName().equalsIgnoreCase("root")
-                    || dbRolesList.get(i).getRoleName().equalsIgnoreCase("getallusers")) {
-                return true;
-            } else {
-                throw new RuntimeException();
-            }
-        }
-        return false;
-    }
-    public boolean checkUpdateUserRole(String id){
-        DBUser dbUser = usersDatabaseService.findUserById(id);
-        List<DBRoles> dbRolesList = new ArrayList<>();
-        dbRolesList.addAll(dbUser.getDbRoles());
-        for (int i = 0; i < dbRolesList.size(); i++) {
-            if (dbRolesList.get(i).getRoleName().equalsIgnoreCase("root")
-                    || dbRolesList.get(i).getRoleName().equalsIgnoreCase("updateuser")) {
-                return true;
-            } else {
-                throw new RuntimeException();
-            }
-        }
-        return false;
-    }
-    public  boolean checkDeleteUserRole(String id){
-        DBUser dbUser = usersDatabaseService.findUserById(id);
-        List<DBRoles> dbRolesList = new ArrayList<>();
-        dbRolesList.addAll(dbUser.getDbRoles());
-        for (int i = 0; i < dbRolesList.size(); i++) {
-            if (dbRolesList.get(i).getRoleName().equalsIgnoreCase("root")
-                    || dbRolesList.get(i).getRoleName().equalsIgnoreCase("deleteuser")) {
+                    || dbRolesList.get(i).getRoleName().equalsIgnoreCase(role)) {
                 return true;
             } else {
                 throw new RuntimeException();

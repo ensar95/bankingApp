@@ -112,16 +112,25 @@ public class UsersDatabaseService {
         transaction.commit();
         session.close();
     }
-    public void addRoleToUser(DBRoles dbRoles, String userId){
-        Session session=sessionFactory.openSession();
+
+    public void addRoleToUser(DBRoles dbRoles, String userId) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        DBUser dbUser=findUserById(userId);
-        List<DBRoles> userRoles=dbUser.getDbRoles();
+        DBUser dbUser = findUserById(userId);
+        List<DBRoles> userRoles = dbUser.getDbRoles();
         userRoles.add(dbRoles);
 
         session.save(dbUser);
         transaction.commit();
         session.close();
+    }
+    public List<DBUser> getAllUsersByRole(String role){
+        Session session = sessionFactory.openSession();
+        Query<DBUser> query = session.createQuery("select u from DBUser u where u.roleId.roleName=:role", DBUser.class);
+        query.setParameter("role", role);
+        List<DBUser> dbUsers = query.getResultList();
+        session.close();
+        return dbUsers;
     }
 }
