@@ -3,6 +3,7 @@ package com.banking.app.bankingApp.controller;
 import com.banking.app.bankingApp.config.TokenUtil;
 import com.banking.app.bankingApp.response.analytics.Analytics;
 import com.banking.app.bankingApp.service.analytics.AnalyticsManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,12 @@ import java.util.List;
 
 @RestController
 public class AnalyticsController {
-
+    @Autowired
     private AnalyticsManagementService analyticsManagementService;
+    @Autowired
     private TokenUtil tokenUtil;
+
     public AnalyticsController() {
-        tokenUtil=TokenUtil.getInstance();
-        analyticsManagementService = AnalyticsManagementService.getInstance();
     }
 
     @GetMapping(value = "/analytics/{accountId}")
@@ -27,13 +28,13 @@ public class AnalyticsController {
             @RequestParam(name = "endDate", required = true) String endDate,
             @RequestHeader(name = "Authorization") String authorization) {
         try {
-            String userId=tokenUtil.getIdFromToken(authorization);
+            String userId = tokenUtil.getIdFromToken(authorization);
             return ResponseEntity.status(HttpStatus.OK).body(analyticsManagementService.getAnalytics(accountId, startDate, endDate, userId));
         } catch (NoResultException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

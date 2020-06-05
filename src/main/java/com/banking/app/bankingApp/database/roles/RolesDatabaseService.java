@@ -8,15 +8,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public class RolesDatabaseService {
-
-    private static final RolesDatabaseService rolesDatabaseService = new RolesDatabaseService();
     private SessionFactory sessionFactory;
 
     private RolesDatabaseService() {
@@ -24,9 +23,6 @@ public class RolesDatabaseService {
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
     }
 
-    public static RolesDatabaseService getInstance() {
-        return rolesDatabaseService;
-    }
 
     public DBRoles createDbRole(CreateRole createRole) {
         Session session = sessionFactory.openSession();

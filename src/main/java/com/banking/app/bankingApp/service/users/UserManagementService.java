@@ -1,35 +1,36 @@
 package com.banking.app.bankingApp.service.users;
 
-import com.banking.app.bankingApp.database.roles.DBRoles;
+import com.banking.app.bankingApp.database.email.DBEmailVerificationCodeDatabaseService;
 import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 import com.banking.app.bankingApp.request.users.CreateUser;
 import com.banking.app.bankingApp.request.users.UpdateUser;
 import com.banking.app.bankingApp.response.users.User;
+import com.banking.app.bankingApp.service.email.EmailManagementService;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class UserManagementService {
-    private static UserManagementService userManagementService;
+    @Autowired
     private UsersDatabaseService usersDatabaseService;
+    @Autowired
+    private EmailManagementService emailManagementService;
+    @Autowired
+    private DBEmailVerificationCodeDatabaseService dbEmailVerificationCodeDatabaseService;
 
     private UserManagementService() {
-        usersDatabaseService = UsersDatabaseService.getInstance();
     }
-
-    public static UserManagementService getInstance() {
-        if (userManagementService == null) {
-            userManagementService = new UserManagementService();
-        }
-        return userManagementService;
-    }
-
 
     public User addUser(CreateUser createUser) {
         DBUser dbUser = usersDatabaseService.createDbUser(createUser);
+        String code = emailManagementService.generateCode();
         User user = new User();
         user.setId(dbUser.getId());
         user.setFirstName(dbUser.getFirstName());
@@ -40,7 +41,16 @@ public class UserManagementService {
         user.setCurrentAddress(dbUser.getCurrentAddress());
         user.setPhoneNumber(dbUser.getPhoneNumber());
         user.setCreatedAt(dbUser.getCreatedAt());
+        dbEmailVerificationCodeDatabaseService.createVerificationCode(user.getId(),code);
+        try {
+            emailManagementService.sendVerificationEmail(createUser.getEmail(), code);
+        } catch (IOException e) {
+            return null;
+        } catch (MessagingException e) {
+            return null;
+        }
         return user;
+
     }
 
     public String encryptPassword(String password, String salt) {
@@ -90,7 +100,6 @@ public class UserManagementService {
         DBUser dbUser = usersDatabaseService.findUserById(id);
         usersDatabaseService.deleteUser(id);
     }
-
 
 
     public User getUserByEmailAndPassword(String email, String password) {

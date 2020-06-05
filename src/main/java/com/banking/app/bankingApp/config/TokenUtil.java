@@ -7,25 +7,22 @@ import com.banking.app.bankingApp.service.users.UserManagementService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
+@Service
 public class TokenUtil {
     private static TokenUtil tokenUtil;
+    @Autowired
     private UserManagementService userManagementService;
     private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     private TokenUtil() {
-        userManagementService = UserManagementService.getInstance();
     }
 
-    public static TokenUtil getInstance() {
-        if (tokenUtil == null) {
-            tokenUtil = new TokenUtil();
-        }
-        return tokenUtil;
-    }
 
     public JWTToken getToken(UserLogin userLogin) {
         User user = userManagementService.getUserByEmailAndPassword(userLogin.getEmail(), userLogin.getPassword());

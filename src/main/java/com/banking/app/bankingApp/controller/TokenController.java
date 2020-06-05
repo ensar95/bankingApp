@@ -4,6 +4,7 @@ import com.banking.app.bankingApp.config.TokenUtil;
 import com.banking.app.bankingApp.request.users.UserLogin;
 import com.banking.app.bankingApp.response.jwtToken.JWTToken;
 import com.banking.app.bankingApp.service.users.UserManagementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TokenController {
+    @Autowired
     UserManagementService userManagementService;
+    @Autowired
     TokenUtil tokenUtil;
 
     public TokenController() {
-        userManagementService = UserManagementService.getInstance();
-        tokenUtil = TokenUtil.getInstance();
     }
 
     @PostMapping(value = "/token")

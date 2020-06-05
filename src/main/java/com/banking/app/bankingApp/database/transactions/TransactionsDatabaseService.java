@@ -9,26 +9,25 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class TransactionsDatabaseService {
-    private static final TransactionsDatabaseService transactionDatabaseService = new TransactionsDatabaseService();
+    @Autowired
     private AccountsDatabaseService accountsDatabaseService;
     private SessionFactory sessionFactory;
 
     private TransactionsDatabaseService() {
-        accountsDatabaseService = AccountsDatabaseService.getInstance();
         File f = new File("C:\\Users\\Ensar\\Desktop\\bankingApp\\src\\main\\resources\\hibernate.cfg.xml");
         sessionFactory = new Configuration().configure(f).buildSessionFactory();
     }
 
-    public static TransactionsDatabaseService getInstance() {
-        return transactionDatabaseService;
-    }
 
     public DBTransaction addDBTransaction(CreateTransaction createTransaction) {
         Session session = sessionFactory.openSession();
@@ -104,7 +103,7 @@ public class TransactionsDatabaseService {
     public List<DBTransaction> getAllTransactionsByDateForId(String id, LocalDateTime startDate, LocalDateTime endDate) {
         Session session = sessionFactory.openSession();
         Query<DBTransaction> query = session.createQuery("from DBTransaction t where (t.destinationAccountId.id =:accountId or t.sourceAccountId.id =:accountId) and t.createdAt>= :start and t.createdAt< :end", DBTransaction.class);
-        query.setParameter("accountId",id);
+        query.setParameter("accountId", id);
         query.setParameter("start", startDate);
         query.setParameter("end", endDate);
         List<DBTransaction> dbTransactions = query.getResultList();

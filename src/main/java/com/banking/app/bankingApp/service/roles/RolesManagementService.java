@@ -5,21 +5,20 @@ import com.banking.app.bankingApp.database.roles.RolesDatabaseService;
 import com.banking.app.bankingApp.request.roles.CreateRole;
 import com.banking.app.bankingApp.request.roles.UpdateRole;
 import com.banking.app.bankingApp.response.roles.Roles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class RolesManagementService {
-    private static final RolesManagementService rolesManagementService = new RolesManagementService();
+    @Autowired
     private RolesDatabaseService rolesDatabaseService;
 
     private RolesManagementService() {
-        rolesDatabaseService = RolesDatabaseService.getInstance();
     }
 
-    public static RolesManagementService getInstance() {
-        return rolesManagementService;
-    }
 
     public Roles addRole(CreateRole createRole) {
         DBRoles dbRoles = rolesDatabaseService.createDbRole(createRole);
@@ -34,7 +33,7 @@ public class RolesManagementService {
     public List<Roles> getAllRoles() {
         List<DBRoles> dbRolesList = rolesDatabaseService.getAllRoles();
         List<Roles> rolesList = new ArrayList();
-        for (int i=0; i< dbRolesList.size(); i++){
+        for (int i = 0; i < dbRolesList.size(); i++) {
             Roles roles = new Roles();
             roles.setId(dbRolesList.get(i).getId());
             roles.setRoleName(dbRolesList.get(i).getRoleName());
@@ -44,7 +43,8 @@ public class RolesManagementService {
         }
         return rolesList;
     }
-    public Roles getRoleById(String id){
+
+    public Roles getRoleById(String id) {
         Roles roles = new Roles();
         DBRoles dbRoles = rolesDatabaseService.getRoleById(id);
         roles.setId(dbRoles.getId());
@@ -53,10 +53,12 @@ public class RolesManagementService {
         roles.setCreatedAt(dbRoles.getCreatedAt());
         return roles;
     }
-    public void updateRoleById(String id, UpdateRole updateRole){
+
+    public void updateRoleById(String id, UpdateRole updateRole) {
         rolesDatabaseService.updateRoleById(id, updateRole);
     }
-    public void deleteRoleById(String id){
+
+    public void deleteRoleById(String id) {
         rolesDatabaseService.deleteRoleById(id);
     }
 }

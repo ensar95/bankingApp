@@ -5,21 +5,19 @@ import com.banking.app.bankingApp.database.roles.RolesDatabaseService;
 import com.banking.app.bankingApp.database.users.DBUser;
 import com.banking.app.bankingApp.database.users.UsersDatabaseService;
 import com.banking.app.bankingApp.request.roleUserAssign.AssignRole;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RoleAssignManagementService {
-    private static final RoleAssignManagementService roleAssignManagementService = new RoleAssignManagementService();
+    @Autowired
     private UsersDatabaseService usersDatabaseService;
+    @Autowired
     private RolesDatabaseService rolesDatabaseService;
 
     private RoleAssignManagementService() {
-        usersDatabaseService = UsersDatabaseService.getInstance();
-        rolesDatabaseService = RolesDatabaseService.getInstance();
-    }
-
-    public static RoleAssignManagementService getInstance() {
-        return roleAssignManagementService;
     }
 
     private boolean validateUserRoles(List<DBRoles> dbRolesList, DBRoles dbRoles) {

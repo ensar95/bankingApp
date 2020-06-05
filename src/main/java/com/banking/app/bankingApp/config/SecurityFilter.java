@@ -2,6 +2,7 @@ package com.banking.app.bankingApp.config;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,10 @@ import java.io.IOException;
 @Component
 @Order(1)
 public class SecurityFilter implements Filter {
+    @Autowired
     TokenUtil tokenUtil;
 
     public SecurityFilter() {
-        tokenUtil = TokenUtil.getInstance();
     }
 
     @Override
@@ -29,7 +30,8 @@ public class SecurityFilter implements Filter {
         String userURI = "/users";
         String roleURI = "/roles";
         String tokenURI = "/token";
-        if (currentURI.startsWith(userURI) || currentURI.startsWith(tokenURI) || currentURI.startsWith(roleURI)) {
+        String emailURI = "/email";
+        if (currentURI.startsWith(userURI) || currentURI.startsWith(tokenURI) || currentURI.startsWith(emailURI) || currentURI.startsWith(roleURI)) {
             chain.doFilter(request, response);
         } else {
             try {
