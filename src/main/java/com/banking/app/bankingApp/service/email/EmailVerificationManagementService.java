@@ -35,5 +35,4 @@ public class EmailVerificationManagementService {
             dbEmailVerificationCodeDatabaseService.updateVerificationCodeFlag(dbEmailVerificationCode.getId(), "Used");
         }
     }
-
 }
